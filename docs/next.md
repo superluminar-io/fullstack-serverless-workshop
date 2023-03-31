@@ -1,6 +1,9 @@
 # What’s next?
 
-In the labs, we created a REST API, persisted our data in a DynamoDB table and even deployed a frontend app. That's cool, but we don't have to stop here. You can extend the example, create a full REST API, or work on the frontend app to interact with the API. This section is just an inspiration of things you could do.
+In the labs, we created a REST API, persisted our data in a DynamoDB table and even deployed a frontend app. That's cool, but we are hungry for more... 
+This section is just an inspiration of things you could do.
+
+First this workshop is based on [another workshop](https://workshop.superluminar.io/#/) where you get further insights on testing and do a mini game day.
 
 - API Gateway
   - Implement a route to get a note by id
@@ -18,8 +21,6 @@ In the labs, we created a REST API, persisted our data in a DynamoDB table and e
   - Create a [CloudWatch Alarm for the REST API](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-apigatewayv2-alpha-readme.html#metrics)
   - Enable [X-Ray for the AWS lambda functions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html#lambda-with-x-ray-tracing) and get familiar with tracing
   - Create a [metric based on an AWS Lambda log output](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_logs-readme.html#metric-filters)
-- Testing
-  - The integration tests could be combined for a full journey: With the first test we create a note, with the second one we list the notes, but we could also check if the created note is part of the list of notes.
 - Continuous Delivery (Advanced)
   - Create a deployment pipeline with [CDK Pipelines](https://docs.aws.amazon.com/cdk/api/latest/docs/pipelines-readme.html)
 - Security (Advanced)
