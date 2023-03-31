@@ -1,27 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Snapshot 1`] = `
-Object {
-  "Outputs": Object {
-    "restapiEndpoint59F0B73F": Object {
-      "Value": Object {
-        "Fn::Join": Array [
+{
+  "Outputs": {
+    "restapiEndpoint59F0B73F": {
+      "Value": {
+        "Fn::Join": [
           "",
-          Array [
+          [
             "https://",
-            Object {
+            {
               "Ref": "restapi955FE7EE",
             },
             ".execute-api.",
-            Object {
+            {
               "Ref": "AWS::Region",
             },
             ".",
-            Object {
+            {
               "Ref": "AWS::URLSuffix",
             },
             "/",
-            Object {
+            {
               "Ref": "restapiDeploymentStageprodD0BC9A49",
             },
             "/",
@@ -29,56 +29,295 @@ Object {
         ],
       },
     },
+    "statichostingFrontendURL45F8BF22": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Fn::GetAtt": [
+                "statichostingfrontenddistributionE2BD94E0",
+                "DomainName",
+              ],
+            },
+          ],
+        ],
+      },
+    },
   },
-  "Parameters": Object {
-    "BootstrapVersion": Object {
+  "Parameters": {
+    "BootstrapVersion": {
       "Default": "/cdk-bootstrap/hnb659fds/version",
       "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
       "Type": "AWS::SSM::Parameter::Value<String>",
     },
   },
-  "Resources": Object {
-    "restapi955FE7EE": Object {
-      "Properties": Object {
+  "Resources": {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "2bc265c5e0569aeb24a6349c15bd54e76e845892376515e036627ab0cc70bb64.zip",
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "statichostingfrontenddeploymentAwsCliLayerFEA960FC",
+          },
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.9",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                      },
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::",
+                      {
+                        "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "statichostingfrontendC670B245",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "statichostingfrontendC670B245",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "cloudfront:GetInvalidation",
+                "cloudfront:CreateInvalidation",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
+      "DependsOn": [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip",
+        },
+        "Description": {
+          "Fn::Join": [
+            "",
+            [
+              "Lambda function for auto-deleting objects in ",
+              {
+                "Ref": "statichostingfrontendC670B245",
+              },
+              " S3 bucket.",
+            ],
+          ],
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "restapi955FE7EE": {
+      "Properties": {
         "Name": "api",
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "restapiAccount60CB3373": Object {
-      "DependsOn": Array [
+    "restapiAccount60CB3373": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
         "restapi955FE7EE",
       ],
-      "Properties": Object {
-        "CloudWatchRoleArn": Object {
-          "Fn::GetAtt": Array [
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
             "restapiCloudWatchRoleCE742A10",
             "Arn",
           ],
         },
       },
       "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
     },
-    "restapiCloudWatchRoleCE742A10": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "restapiCloudWatchRoleCE742A10": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "apigateway.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
@@ -88,59 +327,60 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
     },
-    "restapiDeploymentC2F9DE708b927929c48caf8409ca73e0076086ae": Object {
-      "DependsOn": Array [
+    "restapiDeploymentC2F9DE708b927929c48caf8409ca73e0076086ae": {
+      "DependsOn": [
         "restapinotesGETAFC57B48",
         "restapinotesPOSTB8CD2FDB",
         "restapinotes65DC8F7A",
       ],
-      "Properties": Object {
+      "Properties": {
         "Description": "Automatically created by the RestApi construct",
-        "RestApiId": Object {
+        "RestApiId": {
           "Ref": "restapi955FE7EE",
         },
       },
       "Type": "AWS::ApiGateway::Deployment",
     },
-    "restapiDeploymentStageprodD0BC9A49": Object {
-      "DependsOn": Array [
+    "restapiDeploymentStageprodD0BC9A49": {
+      "DependsOn": [
         "restapiAccount60CB3373",
       ],
-      "Properties": Object {
-        "DeploymentId": Object {
+      "Properties": {
+        "DeploymentId": {
           "Ref": "restapiDeploymentC2F9DE708b927929c48caf8409ca73e0076086ae",
         },
-        "RestApiId": Object {
+        "RestApiId": {
           "Ref": "restapi955FE7EE",
         },
         "StageName": "prod",
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "restapilistnotesA6C96244": Object {
-      "DependsOn": Array [
+    "restapilistnotesA6C96244": {
+      "DependsOn": [
         "restapilistnotesServiceRoleDefaultPolicyC3168DB9",
         "restapilistnotesServiceRoleF0B5FBE8",
       ],
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "5b53f355406a026edcda193d023034107d5019b8d69c460c3f618090e194106d.zip",
+          "S3Key": "aa9380e30366b2152a5bdb33a373f4e30aff871ce7f77b48f86f311066c13d9b.zip",
         },
-        "Environment": Object {
-          "Variables": Object {
+        "Environment": {
+          "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-            "TABLE_NAME": Object {
+            "TABLE_NAME": {
               "Ref": "restapinotestable817BCE94",
             },
           },
         },
         "Handler": "index.handler",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "restapilistnotesServiceRoleF0B5FBE8",
             "Arn",
           ],
@@ -149,21 +389,21 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "restapilistnotesServiceRoleDefaultPolicyC3168DB9": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "restapilistnotesServiceRoleDefaultPolicyC3168DB9": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
               "Action": "dynamodb:Scan",
               "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
                     "restapinotestable817BCE94",
                     "Arn",
                   ],
                 },
-                Object {
+                {
                   "Ref": "AWS::NoValue",
                 },
               ],
@@ -172,35 +412,35 @@ Object {
           "Version": "2012-10-17",
         },
         "PolicyName": "restapilistnotesServiceRoleDefaultPolicyC3168DB9",
-        "Roles": Array [
-          Object {
+        "Roles": [
+          {
             "Ref": "restapilistnotesServiceRoleF0B5FBE8",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
-    "restapilistnotesServiceRoleF0B5FBE8": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "restapilistnotesServiceRoleF0B5FBE8": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -211,43 +451,43 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "restapinotes65DC8F7A": Object {
-      "Properties": Object {
-        "ParentId": Object {
-          "Fn::GetAtt": Array [
+    "restapinotes65DC8F7A": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
             "restapi955FE7EE",
             "RootResourceId",
           ],
         },
         "PathPart": "notes",
-        "RestApiId": Object {
+        "RestApiId": {
           "Ref": "restapi955FE7EE",
         },
       },
       "Type": "AWS::ApiGateway::Resource",
     },
-    "restapinotesGETAFC57B48": Object {
-      "Properties": Object {
+    "restapinotesGETAFC57B48": {
+      "Properties": {
         "AuthorizationType": "NONE",
         "HttpMethod": "GET",
-        "Integration": Object {
+        "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
-          "Uri": Object {
-            "Fn::Join": Array [
+          "Uri": {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":apigateway:",
-                Object {
+                {
                   "Ref": "AWS::Region",
                 },
                 ":lambda:path/2015-03-31/functions/",
-                Object {
-                  "Fn::GetAtt": Array [
+                {
+                  "Fn::GetAtt": [
                     "restapilistnotesA6C96244",
                     "Arn",
                   ],
@@ -257,43 +497,43 @@ Object {
             ],
           },
         },
-        "ResourceId": Object {
+        "ResourceId": {
           "Ref": "restapinotes65DC8F7A",
         },
-        "RestApiId": Object {
+        "RestApiId": {
           "Ref": "restapi955FE7EE",
         },
       },
       "Type": "AWS::ApiGateway::Method",
     },
-    "restapinotesGETApiPermissionTesttestrestapi6761200BGETnotes4B01F47C": Object {
-      "Properties": Object {
+    "restapinotesGETApiPermissionTesttestrestapi6761200BGETnotes4B01F47C": {
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "restapilistnotesA6C96244",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
+              {
                 "Ref": "restapi955FE7EE",
               },
               "/test-invoke-stage/GET/notes",
@@ -303,38 +543,38 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "restapinotesGETApiPermissiontestrestapi6761200BGETnotesA2BCA8E4": Object {
-      "Properties": Object {
+    "restapinotesGETApiPermissiontestrestapi6761200BGETnotesA2BCA8E4": {
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "restapilistnotesA6C96244",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
+              {
                 "Ref": "restapi955FE7EE",
               },
               "/",
-              Object {
+              {
                 "Ref": "restapiDeploymentStageprodD0BC9A49",
               },
               "/GET/notes",
@@ -344,34 +584,34 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "restapinotesPOSTApiPermissionTesttestrestapi6761200BPOSTnotes388F178A": Object {
-      "Properties": Object {
+    "restapinotesPOSTApiPermissionTesttestrestapi6761200BPOSTnotes388F178A": {
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "restapiputnoteA36C2303",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
+              {
                 "Ref": "restapi955FE7EE",
               },
               "/test-invoke-stage/POST/notes",
@@ -381,38 +621,38 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "restapinotesPOSTApiPermissiontestrestapi6761200BPOSTnotesC38CB23A": Object {
-      "Properties": Object {
+    "restapinotesPOSTApiPermissiontestrestapi6761200BPOSTnotesC38CB23A": {
+      "Properties": {
         "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
+        "FunctionName": {
+          "Fn::GetAtt": [
             "restapiputnoteA36C2303",
             "Arn",
           ],
         },
         "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
+        "SourceArn": {
+          "Fn::Join": [
             "",
-            Array [
+            [
               "arn:",
-              Object {
+              {
                 "Ref": "AWS::Partition",
               },
               ":execute-api:",
-              Object {
+              {
                 "Ref": "AWS::Region",
               },
               ":",
-              Object {
+              {
                 "Ref": "AWS::AccountId",
               },
               ":",
-              Object {
+              {
                 "Ref": "restapi955FE7EE",
               },
               "/",
-              Object {
+              {
                 "Ref": "restapiDeploymentStageprodD0BC9A49",
               },
               "/POST/notes",
@@ -422,28 +662,28 @@ Object {
       },
       "Type": "AWS::Lambda::Permission",
     },
-    "restapinotesPOSTB8CD2FDB": Object {
-      "Properties": Object {
+    "restapinotesPOSTB8CD2FDB": {
+      "Properties": {
         "AuthorizationType": "NONE",
         "HttpMethod": "POST",
-        "Integration": Object {
+        "Integration": {
           "IntegrationHttpMethod": "POST",
           "Type": "AWS_PROXY",
-          "Uri": Object {
-            "Fn::Join": Array [
+          "Uri": {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":apigateway:",
-                Object {
+                {
                   "Ref": "AWS::Region",
                 },
                 ":lambda:path/2015-03-31/functions/",
-                Object {
-                  "Fn::GetAtt": Array [
+                {
+                  "Fn::GetAtt": [
                     "restapiputnoteA36C2303",
                     "Arn",
                   ],
@@ -453,64 +693,64 @@ Object {
             ],
           },
         },
-        "ResourceId": Object {
+        "ResourceId": {
           "Ref": "restapinotes65DC8F7A",
         },
-        "RestApiId": Object {
+        "RestApiId": {
           "Ref": "restapi955FE7EE",
         },
       },
       "Type": "AWS::ApiGateway::Method",
     },
-    "restapinotestable817BCE94": Object {
+    "restapinotestable817BCE94": {
       "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "AttributeDefinitions": Array [
-          Object {
+      "Properties": {
+        "AttributeDefinitions": [
+          {
             "AttributeName": "id",
             "AttributeType": "S",
           },
         ],
-        "KeySchema": Array [
-          Object {
+        "KeySchema": [
+          {
             "AttributeName": "id",
             "KeyType": "HASH",
           },
         ],
-        "ProvisionedThroughput": Object {
+        "ProvisionedThroughput": {
           "ReadCapacityUnits": 5,
           "WriteCapacityUnits": 5,
         },
-        "StreamSpecification": Object {
+        "StreamSpecification": {
           "StreamViewType": "NEW_IMAGE",
         },
       },
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Retain",
     },
-    "restapiputnoteA36C2303": Object {
-      "DependsOn": Array [
+    "restapiputnoteA36C2303": {
+      "DependsOn": [
         "restapiputnoteServiceRoleDefaultPolicy78C040A5",
         "restapiputnoteServiceRole19ED2A10",
       ],
-      "Properties": Object {
-        "Code": Object {
-          "S3Bucket": Object {
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "a94d3093754fbde403232c155ed136ead49b4d5a01b99ef28d63b12005ceaa05.zip",
+          "S3Key": "e52ce6eb91a78556abed6034d2f4199756cdc0181f9fd6c7ede70ab963301753.zip",
         },
-        "Environment": Object {
-          "Variables": Object {
+        "Environment": {
+          "Variables": {
             "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1",
-            "TABLE_NAME": Object {
+            "TABLE_NAME": {
               "Ref": "restapinotestable817BCE94",
             },
           },
         },
         "Handler": "index.handler",
-        "Role": Object {
-          "Fn::GetAtt": Array [
+        "Role": {
+          "Fn::GetAtt": [
             "restapiputnoteServiceRole19ED2A10",
             "Arn",
           ],
@@ -519,27 +759,27 @@ Object {
       },
       "Type": "AWS::Lambda::Function",
     },
-    "restapiputnoteServiceRole19ED2A10": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "restapiputnoteServiceRole19ED2A10": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
               "Action": "sts:AssumeRole",
               "Effect": "Allow",
-              "Principal": Object {
+              "Principal": {
                 "Service": "lambda.amazonaws.com",
               },
             },
           ],
           "Version": "2012-10-17",
         },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
               "",
-              Array [
+              [
                 "arn:",
-                Object {
+                {
                   "Ref": "AWS::Partition",
                 },
                 ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
@@ -550,21 +790,21 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
-    "restapiputnoteServiceRoleDefaultPolicy78C040A5": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
+    "restapiputnoteServiceRoleDefaultPolicy78C040A5": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
               "Action": "dynamodb:PutItem",
               "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
                     "restapinotestable817BCE94",
                     "Arn",
                   ],
                 },
-                Object {
+                {
                   "Ref": "AWS::NoValue",
                 },
               ],
@@ -573,31 +813,236 @@ Object {
           "Version": "2012-10-17",
         },
         "PolicyName": "restapiputnoteServiceRoleDefaultPolicy78C040A5",
-        "Roles": Array [
-          Object {
+        "Roles": [
+          {
             "Ref": "restapiputnoteServiceRole19ED2A10",
           },
         ],
       },
       "Type": "AWS::IAM::Policy",
     },
+    "statichostingfrontendAutoDeleteObjectsCustomResource4ABC113B": {
+      "DeletionPolicy": "Delete",
+      "DependsOn": [
+        "statichostingfrontendPolicyAA14617D",
+      ],
+      "Properties": {
+        "BucketName": {
+          "Ref": "statichostingfrontendC670B245",
+        },
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "statichostingfrontendC670B245": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+          {
+            "Key": "aws-cdk:cr-owned:451a96d2",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "statichostingfrontendPolicyAA14617D": {
+      "Properties": {
+        "Bucket": {
+          "Ref": "statichostingfrontendC670B245",
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": {
+                "AWS": {
+                  "Fn::GetAtt": [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": [
+                {
+                  "Fn::GetAtt": [
+                    "statichostingfrontendC670B245",
+                    "Arn",
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      {
+                        "Fn::GetAtt": [
+                          "statichostingfrontendC670B245",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": "s3:GetObject",
+              "Effect": "Allow",
+              "Principal": {
+                "CanonicalUser": {
+                  "Fn::GetAtt": [
+                    "statichostingfrontenddistributionOrigin1S3Origin73A3983D",
+                    "S3CanonicalUserId",
+                  ],
+                },
+              },
+              "Resource": {
+                "Fn::Join": [
+                  "",
+                  [
+                    {
+                      "Fn::GetAtt": [
+                        "statichostingfrontendC670B245",
+                        "Arn",
+                      ],
+                    },
+                    "/*",
+                  ],
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "statichostingfrontenddeploymentAwsCliLayerFEA960FC": {
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "9851da99dbbb72e4b5ea38e666b1b7a4d33131f3791223f114f5e999e731474d.zip",
+        },
+        "Description": "/opt/awscli/aws",
+      },
+      "Type": "AWS::Lambda::LayerVersion",
+    },
+    "statichostingfrontenddeploymentCustomResource76B68E48": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "DestinationBucketName": {
+          "Ref": "statichostingfrontendC670B245",
+        },
+        "DistributionId": {
+          "Ref": "statichostingfrontenddistributionE2BD94E0",
+        },
+        "DistributionPaths": [
+          "/*",
+        ],
+        "Prune": true,
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn",
+          ],
+        },
+        "SourceBucketNames": [
+          {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+        ],
+        "SourceObjectKeys": [
+          "512b511f3e113a8f1329f1403a3d11f37bbfcce02cac08c30e8e3a8de3155aa0.zip",
+        ],
+      },
+      "Type": "Custom::CDKBucketDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "statichostingfrontenddistributionE2BD94E0": {
+      "Properties": {
+        "DistributionConfig": {
+          "DefaultCacheBehavior": {
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
+            "Compress": true,
+            "TargetOriginId": "teststatichostingfrontenddistributionOrigin1373840CB",
+            "ViewerProtocolPolicy": "allow-all",
+          },
+          "DefaultRootObject": "index.html",
+          "Enabled": true,
+          "HttpVersion": "http2",
+          "IPV6Enabled": true,
+          "Origins": [
+            {
+              "DomainName": {
+                "Fn::GetAtt": [
+                  "statichostingfrontendC670B245",
+                  "RegionalDomainName",
+                ],
+              },
+              "Id": "teststatichostingfrontenddistributionOrigin1373840CB",
+              "S3OriginConfig": {
+                "OriginAccessIdentity": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "origin-access-identity/cloudfront/",
+                      {
+                        "Ref": "statichostingfrontenddistributionOrigin1S3Origin73A3983D",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+        },
+      },
+      "Type": "AWS::CloudFront::Distribution",
+    },
+    "statichostingfrontenddistributionOrigin1S3Origin73A3983D": {
+      "Properties": {
+        "CloudFrontOriginAccessIdentityConfig": {
+          "Comment": "Identity for teststatichostingfrontenddistributionOrigin1373840CB",
+        },
+      },
+      "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
+    },
   },
-  "Rules": Object {
-    "CheckBootstrapVersion": Object {
-      "Assertions": Array [
-        Object {
-          "Assert": Object {
-            "Fn::Not": Array [
-              Object {
-                "Fn::Contains": Array [
-                  Array [
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
                     "1",
                     "2",
                     "3",
                     "4",
                     "5",
                   ],
-                  Object {
+                  {
                     "Ref": "BootstrapVersion",
                   },
                 ],

@@ -149,16 +149,7 @@ After that, we take the exact same example and create the resources using AWS Cl
 - How many notes are returned in the worst case?
 - What is the difference between a DynamoDB Scan and Query operation?
 
-### Questions for Lab 4
-
-#### DynamoDB Stream
-
-- What stream types can we configure for the DynamoDB stream, and what are the benefits?
-- What is the default batch size, and what do we need to consider for the AWS lambda function configuration?
-- What are secenarios where retry policies for DynamoDB streams might be helpful? 
-- What happens with the event assuming the AWS Lambda function fails?
-
-### Questions for Lab 5
+### Questions for Lab 2
 
 - What is the impact of the S3 bucket configuration?
 - What are the differences between static hosting with CloudFront and an S3 bucket with _static website hosting_ enabled?

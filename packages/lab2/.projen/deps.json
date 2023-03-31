@@ -5,12 +5,11 @@
       "type": "build"
     },
     {
-      "name": "@types/jest",
+      "name": "@types/fs-extra",
       "type": "build"
     },
     {
-      "name": "@types/node-fetch",
-      "version": "2",
+      "name": "@types/jest",
       "type": "build"
     },
     {
@@ -31,10 +30,6 @@
     {
       "name": "aws-cdk",
       "version": "^2.35.0",
-      "type": "build"
-    },
-    {
-      "name": "aws-sdk-client-mock",
       "type": "build"
     },
     {
@@ -111,8 +106,7 @@
       "type": "runtime"
     },
     {
-      "name": "node-fetch",
-      "version": "2.6.1",
+      "name": "fs-extra",
       "type": "runtime"
     }
   ],

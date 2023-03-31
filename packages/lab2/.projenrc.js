@@ -6,20 +6,15 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   github: false,
   packageManager: javascript.NodePackageManager.NPM,
   deps: [
-    'node-fetch@2.6.1',
     '@aws-sdk/client-dynamodb',
     '@aws-sdk/lib-dynamodb',
+    'fs-extra',
   ],
   devDeps: [
     '@types/aws-lambda',
-    '@types/node-fetch@2',
-    'aws-sdk-client-mock',
+    '@types/fs-extra',
   ],
 });
 
-project.addTask('test:e2e', {
-  exec: 'jest --testMatch "**/*.e2etest.ts"',
-});
 // Windows users might need this
-project.jest.addTestMatch('**/?(*.)+(spec|test).ts?(x)');
 project.synth();
