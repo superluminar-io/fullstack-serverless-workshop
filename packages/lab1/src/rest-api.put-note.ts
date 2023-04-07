@@ -6,8 +6,16 @@ export const handler = async (event: AWSLambda.APIGatewayProxyEvent) => {
 
   const body = JSON.parse(event.body || '{}');
 
+  const corsHeader = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': true,
+    }
+  }
+
   if (!body.title || !body.content) {
     return {
+      ...corsHeader,
       statusCode: 400,
     };
   }
@@ -22,6 +30,7 @@ export const handler = async (event: AWSLambda.APIGatewayProxyEvent) => {
   });
 
   return {
+    ...corsHeader,
     statusCode: 201,
   };
 };

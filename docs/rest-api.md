@@ -273,9 +273,17 @@ The note should be persisted in the DynamoDB table.
      const DB = DynamoDBDocument.from(new DynamoDBClient({}));
    
      const body = JSON.parse(event.body || '{}');
+
+     const corsHeader = {
+       headers: {
+         'Access-Control-Allow-Origin': '*',
+         'Access-Control-Allow-Credentials': true,
+       }
+     }
    
      if (!body.title || !body.content) {
        return {
+         ...corsHeader,
          statusCode: 400,
        };
      }
@@ -290,6 +298,7 @@ The note should be persisted in the DynamoDB table.
      });
    
      return {
+       ...corsHeader,
        statusCode: 201,
      };
    };
@@ -383,6 +392,10 @@ HTTP/2 200
      });
    
      return {
+       headers: {
+         'Access-Control-Allow-Origin': '*',
+         'Access-Control-Allow-Credentials': true,
+       },
        statusCode: 200,
        body: JSON.stringify(response.Items),
      };
