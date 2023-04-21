@@ -106,14 +106,14 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
    ```
 1. Add the following code to the file:
    ```typescript
-   import { aws_lambda_nodejs as lambdaNodeJs } from 'aws-cdk-lib';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {
      constructor(scope: Construct, id: string) {
        super(scope, id);
    
-       new lambdaNodeJs.NodejsFunction(this, "put-note");
+       new NodejsFunction(this, "put-note");
      }
    }
    ```
@@ -165,17 +165,15 @@ HTTP/2 200
 
 1. Update the file `./src/rest-api.ts`:
    ```typescript
-   import {
-     aws_lambda_nodejs as lambdaNodeJs,
-     aws_apigateway as apigateway,
-   } from 'aws-cdk-lib';
+   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {   
      constructor(scope: Construct, id: string) {
        super(scope, id);
    
-       const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note');
+       const putNote = new NodejsFunction(this, 'put-note');
    
        const api = new apigateway.RestApi(this, 'api');
        const resource = api.root.addResource('notes');
@@ -231,11 +229,9 @@ The note should be persisted in the DynamoDB table.
 
 1. Update the construct (`src/rest-api.ts`):
    ```typescript
-   import {
-     aws_dynamodb as dynamodb,
-     aws_lambda_nodejs as lambdaNodeJs,
-     aws_apigateway as apigateway,
-   } from 'aws-cdk-lib';
+   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+   import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {
@@ -249,7 +245,7 @@ The note should be persisted in the DynamoDB table.
          stream: dynamodb.StreamViewType.NEW_IMAGE,
        });
    
-       const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note', {
+       const putNote = new NodejsFunction(this, 'put-note', {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },
@@ -325,11 +321,9 @@ HTTP/2 200
 
 1. Extend the construct (`./src/rest-api.ts`):
    ```typescript
-   import {
-     aws_dynamodb as dynamodb,
-     aws_lambda_nodejs as lambdaNodeJs,
-     aws_apigateway as apigateway,
-   } from 'aws-cdk-lib';
+   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+   import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {
@@ -343,13 +337,13 @@ HTTP/2 200
          stream: dynamodb.StreamViewType.NEW_IMAGE,
        });
    
-       const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note', {
+       const putNote = new NodejsFunction(this, 'put-note', {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },
        });
    
-       const listNotes = new lambdaNodeJs.NodejsFunction(this, 'list-notes', {
+       const listNotes = new NodejsFunction(this, 'list-notes', {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },

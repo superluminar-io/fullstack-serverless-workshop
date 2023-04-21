@@ -91,14 +91,14 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
     ```typescript 
     import { execSync } from 'child_process';
     import * as path from 'path';
-    import { 
-      aws_cloudfront as cloudfront, 
-      aws_cloudfront_origins as origins, 
-      aws_s3 as s3, 
-      aws_s3_deployment as s3deploy, 
-      CfnOutput, 
-      DockerImage, 
-      RemovalPolicy } from 'aws-cdk-lib';
+    import {
+    CfnOutput,
+    DockerImage,
+    RemovalPolicy } from 'aws-cdk-lib';
+    import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+    import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
+    import * as s3 from 'aws-cdk-lib/aws-s3';
+    import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
     import { Construct } from 'constructs';
     import * as fs from 'fs-extra';
 
