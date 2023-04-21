@@ -37,7 +37,7 @@ Create a fresh AWS CDK app with Projen.
   ```ts
   new MyStack(app, 'notes-api-dev', { env: devEnv });
   ```
-  Rename `my-stack-dev` to something unique (e.g. append your name).
+  Rename `notes-api-dev` to something unique (e.g. append your name).
 1. Deploy the CloudFormation stack:
    ```bash
    npm run deploy
