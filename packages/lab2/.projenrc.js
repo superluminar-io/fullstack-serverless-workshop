@@ -8,6 +8,8 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   deps: [
     '@aws-sdk/client-dynamodb',
     '@aws-sdk/lib-dynamodb',
+    '@aws-cdk/aws-apigatewayv2-alpha',
+    '@aws-cdk/aws-apigatewayv2-integrations-alpha',
     'fs-extra',
   ],
   devDeps: [
