@@ -1,13 +1,13 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { RestApi } from './rest-api';
+import { HttpApi } from './http-api';
 import { StaticHosting } from './static-hosting';
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    new RestApi(this, 'rest-api');
+    new HttpApi(this, 'rest-api');
 
     new StaticHosting(this, 'static-hosting');
   }
