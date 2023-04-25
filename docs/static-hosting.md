@@ -1,17 +1,64 @@
-# Static Hosting
+# Static Hosting in AWS
 
 ## In this lab …
 
-- Learn how to deploy your new beautiful static notes app (or single page applications) with AWS
-- Learn how to pass environment variables to your frontend application
+- Learn how to set up AWS CDK
+- Learn how to deploy your app (or single page applications) with AWS
+
+## Bootstrapping
+
+### 📝 Task
+
+Create a fresh AWS CDK app with Projen.
+
+### 🔎 Hints
+
+- [Getting started with Projen](https://github.com/projen/projen#getting-started)
+
+### 🗺  Step-by-Step Guide
+
+1. Create a new folder `notes-api`:
+   ```bash
+   mkdir notes-api
+   ```
+1. Step into the folder:
+   ```bash
+   cd notes-api
+   ```
+1. Init AWS CDK with Projen:
+   ```bash
+   npx projen@latest new awscdk-app-ts --package-manager 'NPM' --github false --no-git
+   ```
+1. Install Node.js dependencies:
+   ```bash
+   npm i
+   ```
+1. Go to the file `./src/main.ts`. Scroll down and find this line:
+  ```ts
+  new MyStack(app, 'notes-api-dev', { env: devEnv });
+  ```
+  Rename `notes-api-dev` to something unique (e.g. append your name).
+1. Deploy the CloudFormation stack:
+   ```bash
+   npm run deploy
+   ```
+   ⚠️You might run into the following error:
+
+   ![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
+
+   If this is the case, you need to bootstrap your environment first by running:
+
+   ```bash
+   cdk bootstrap
+   ```
+
+   Afterwards you can go ahead and deploy your CloudFormation stack.
 
 ## Frontend Application
 
 ### 📝 Task
 
-First things first. We need a frontend app to deploy a static website. You can use whatever you want, we use [Create React App](https://github.com/facebook/create-react-app) in the step-by-step guide.
-
-Create a frontend app in a new subfolder.
+Create a frontend app in a new subfolder we can deploy as a static website.
 
 ### 🔎 Hints
 
@@ -19,20 +66,12 @@ Create a frontend app in a new subfolder.
 
 ### 🗺  Step-by-Step Guide
 
-%% TODO: Do we want to pull here the app from verena and anne?
-1. Clone the example app to the directory **frontend** to bootstrap a new CRA project:
+1. Clone the example app into the root project:
   ```bash
   git clone GITHUBXXXXX/frontend ~/notes-api/frontend
   ```
-%% TODO: The .env file will be there or??
-%% 1. Create a `.env` file inside the frontend folder:
-%%   ```bash
-%%   touch frontend/.env
-%%   ```
-%% 1. Set the environment variable in the `.env` file to disable Jest version checking:
-%%   ```
-%%   SKIP_PREFLIGHT_CHECK=true 
-%%   ```
+%% TODO: Add .env File in Frontend  
+1. Use the `sample.env` file inside the frontend folder and turn it into a `.env`.
 1. Start the frontend server:
    ```bash
    cd frontend
@@ -41,6 +80,7 @@ Create a frontend app in a new subfolder.
    Go to http://localhost:3000 and enjoy the app!
 
 %% TODO: TO DISCUSS either we cut this or we explain that ec2 need permission and add the secgroup 
+%% Question Verena: Why do we need to add this here?
 
 ## CloudFormation Stack
 
@@ -59,7 +99,7 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
 
 ### 🗺  Step-by-Step Guide
 
-1. Extend the list of CDK dependencies in the `.projenrc.js` configuration. The final file should look like this:
+1. In the root project, extend the list of CDK dependencies in the `.projenrc.js` configuration. The final file should look like this:
    ```js
    const { awscdk, javascript } = require('projen');
    const project = new awscdk.AwsCdkTypeScriptApp({
@@ -69,23 +109,16 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
      name: 'notes-api',
      packageManager: javascript.NodePackageManager.NPM,
      deps: [
-       '@aws-sdk/client-dynamodb',
-       '@aws-sdk/lib-dynamodb',
-       '@aws-cdk/aws-apigatewayv2-alpha": "^2.76.0-alpha.0',
-       '@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.76.0-alpha.0',
        'aws-sdk',
        'fs-extra',
      ],
-     devDeps: [
-       '@types/aws-lambda',
-       '@types/fs-extra',
-     ],
+     devDeps: ['@types/fs-extra'],
    });
 
    project.synth();
     ```
 1. Run `npm run projen` in the root project to install the new dependencies and re-generate the auto-generated files.
-1. Create a file for the new construct:
+1. Create a new file for our first construct:
    ```bash
    touch ./src/static-hosting.ts 
    ```
@@ -167,14 +200,11 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
    ```typescript
    import { App, Stack, StackProps } from 'aws-cdk-lib';
    import { Construct } from 'constructs';
-   import { HttpApi } from './http-api';
    import { StaticHosting } from './static-hosting';
 
    export class MyStack extends Stack {
       constructor(scope: Construct, id: string, props: StackProps = {}) {
       super(scope, id, props);
-
-      const httpApi = new HttpApi(this, 'http-api');
 
       new StaticHosting(this, 'static-hosting');
     }
