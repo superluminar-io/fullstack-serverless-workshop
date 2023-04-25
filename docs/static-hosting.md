@@ -165,14 +165,14 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
    ```typescript
    import { App, Stack, StackProps } from 'aws-cdk-lib';
    import { Construct } from 'constructs';
-   import { RestApi } from './rest-api';
+   import { HttpApi } from './http-api';
    import { StaticHosting } from './static-hosting';
 
    export class MyStack extends Stack {
       constructor(scope: Construct, id: string, props: StackProps = {}) {
       super(scope, id, props);
 
-      const restApi = new RestApi(this, 'rest-api');
+      const httpApi = new HttpApi(this, 'http-api');
 
       new StaticHosting(this, 'static-hosting');
     }

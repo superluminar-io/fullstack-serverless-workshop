@@ -1,9 +1,9 @@
-# REST API
+# RESTful HTTP API
 
 ## In this lab …
 
 - Setting up AWS CDK
-- Setting up REST API with Amazon API Gateway, Lambda, and DynamoDB
+- Setting up RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB
 
 ## Bootstrapping
 
@@ -44,7 +44,7 @@ Create a fresh AWS CDK app with Projen.
    ```
    ⚠️You might run into the following error:
 
-   ![cdk bootstrap error](./media/rest-api/cdk-bootstrap-error.png)
+   ![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
 
    If this is the case, you need to bootstrap your environment first by running:
 
@@ -71,7 +71,7 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
 
 1. Create a new file for the AWS Lambda function:
    ```bash
-   touch ./src/rest-api.put-note.ts 
+   touch ./src/http-api.put-note.ts 
    ```
 1. Add the following code to the file:
    ```typescript
@@ -102,14 +102,14 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
 1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
 1. Create a new file for our first construct:
    ```bash
-   touch ./src/rest-api.ts 
+   touch ./src/http-api.ts 
    ```
 1. Add the following code to the file:
    ```typescript
    import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import { Construct } from 'constructs';
    
-   export class RestApi extends Construct {
+   export class HttpApi extends Construct {
      constructor(scope: Construct, id: string) {
        super(scope, id);
    
@@ -123,13 +123,13 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
    ```typescript
    import { App, Stack, StackProps } from 'aws-cdk-lib';
    import { Construct } from 'constructs';
-   import { RestApi } from './rest-api';
+   import { HttpApi } from './http-api';
    
    export class MyStack extends Stack {
      constructor(scope: Construct, id: string, props: StackProps = {}) {
        super(scope, id, props);
    
-       new RestApi(this, 'rest-api');
+       new HttpApi(this, 'http-api');
      }
    }
    ```
@@ -138,7 +138,7 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
 
    Be aware you will be asked to confirm IAM Statement and IAM Policy Changes:
 
-   ![deployment confirmation](./media/rest-api/deployment-confirmation.png)
+   ![deployment confirmation](./media/http-api/deployment-confirmation.png)
 
 ## Amazon API Gateway
 
@@ -163,26 +163,47 @@ HTTP/2 200
 
 ### 🗺  Step-by-Step Guide
 
-1. Update the file `./src/rest-api.ts`:
+1. Update the file `./src/http-api.ts`:
    ```typescript
-   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
+   import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
    import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import { Construct } from 'constructs';
    
-   export class RestApi extends Construct {   
+   export class HttpApi extends Construct {   
      constructor(scope: Construct, id: string) {
        super(scope, id);
    
        const putNote = new NodejsFunction(this, 'put-note');
    
-       const api = new apigateway.RestApi(this, 'api');
-       const resource = api.root.addResource('notes');
-   
-       resource.addMethod('POST', new apigateway.LambdaIntegration(putNote));
+       const api = new apigwv2.HttpApi(this, 'api', {
+          corsPreflight: {
+            allowHeaders: [
+              'Content-Type',
+            ],
+            allowMethods: [
+              apigwv2.CorsHttpMethod.GET,
+              apigwv2.CorsHttpMethod.OPTIONS,
+              apigwv2.CorsHttpMethod.POST,
+            ],
+            allowOrigins: ['*'],
+          },
+        });
+
+        const putNotesIntegration = new HttpLambdaIntegration(
+          'putNotesIntegration',
+           putNote,
+        );
+
+        api.addRoutes({
+          path: '/notes',
+          methods: [apigwv2.HttpMethod.POST],
+          integration: putNotesIntegration,
+        });
      }
    }
    ```
-1. Update the AWS Lambda function (`./src/rest-api.put-note.ts`):
+1. Update the AWS Lambda function (`./src/http-api.put-note.ts`):
    ```typescript
    export const handler = async () => {
      console.log('Hello World :)');
@@ -227,14 +248,15 @@ The note should be persisted in the DynamoDB table.
 
 ### 🗺  Step-by-Step Guide
 
-1. Update the construct (`src/rest-api.ts`):
+1. Update the construct (`src/http-api.ts`):
    ```typescript
-   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
+   import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
    import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
    import { Construct } from 'constructs';
    
-   export class RestApi extends Construct {
+   export class HttpApi extends Construct {
      public notesTable: dynamodb.Table;
    
      constructor(scope: Construct, id: string) {
@@ -253,14 +275,34 @@ The note should be persisted in the DynamoDB table.
       
        this.notesTable.grant(putNote, 'dynamodb:PutItem');
    
-       const api = new apigateway.RestApi(this, 'api');
-       const resource = api.root.addResource('notes');
-   
-       resource.addMethod('POST', new apigateway.LambdaIntegration(putNote));
+       const api = new apigwv2.HttpApi(this, 'api', {
+          corsPreflight: {
+            allowHeaders: [
+              'Content-Type',
+            ],
+            allowMethods: [
+              apigwv2.CorsHttpMethod.GET,
+              apigwv2.CorsHttpMethod.OPTIONS,
+              apigwv2.CorsHttpMethod.POST,
+            ],
+            allowOrigins: ['*'],
+          },
+        });
+
+        const putNotesIntegration = new HttpLambdaIntegration(
+          'putNotesIntegration',
+           putNote,
+        );
+
+        api.addRoutes({
+          path: '/notes',
+          methods: [apigwv2.HttpMethod.POST],
+          integration: putNotesIntegration,
+        });
      }
    }
    ```
-1. Update the AWS Lambda function (`src/rest-api.put-note.ts`):
+1. Update the AWS Lambda function (`src/http-api.put-note.ts`):
    ```typescript
    import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
    import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
@@ -319,14 +361,15 @@ HTTP/2 200
 
 ### 🗺  Step-by-Step Guide
 
-1. Extend the construct (`./src/rest-api.ts`):
+1. Extend the construct (`./src/http-api.ts`):
    ```typescript
-   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
+   import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
    import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
    import { Construct } from 'constructs';
    
-   export class RestApi extends Construct {
+   export class HttpApi extends Construct {
      public notesTable: dynamodb.Table;
    
      constructor(scope: Construct, id: string) {
@@ -352,17 +395,47 @@ HTTP/2 200
        this.notesTable.grant(putNote, 'dynamodb:PutItem');
        this.notesTable.grant(listNotes, 'dynamodb:Scan');
    
-       const api = new apigateway.RestApi(this, 'api');
-       const resource = api.root.addResource('notes');
-   
-       resource.addMethod('POST', new apigateway.LambdaIntegration(putNote));
-       resource.addMethod('GET', new apigateway.LambdaIntegration(listNotes));
+       const api = new apigwv2.HttpApi(this, 'api', {
+          corsPreflight: {
+            allowHeaders: [
+              'Content-Type',
+            ],
+            allowMethods: [
+              apigwv2.CorsHttpMethod.GET,
+              apigwv2.CorsHttpMethod.OPTIONS,
+              apigwv2.CorsHttpMethod.POST,
+            ],
+            allowOrigins: ['*'],
+          },
+        });
+
+        const putNotesIntegration = new HttpLambdaIntegration(
+          'putNotesIntegration',
+           putNote,
+        );
+
+        const listNotesIntegration = new HttpLambdaIntegration(
+          'listNotesIntegration',
+           listNotes,
+        );
+
+        api.addRoutes({
+          path: '/notes',
+          methods: [apigwv2.HttpMethod.POST],
+          integration: putNotesIntegration,
+        });
+
+        api.addRoutes({
+          path: '/notes',
+          methods: [apigwv2.HttpMethod.GET],
+          integration: listNotesIntegration,
+        });
      }
    }
    ```
 1. Create a new file for the second AWS Lambda function:
    ```bash
-   touch src/rest-api.list-notes.ts
+   touch src/http-api.list-notes.ts
    ```
 1. Add the following code to the file:
    ```typescript
