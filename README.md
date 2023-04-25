@@ -1,7 +1,7 @@
 # Fullstack Serverless Workshop 🎓
-> Hands-on AWS serverless workshop for beginners
+> Hands-on AWS workshop for beginners with a background in frontend development.
 
-👉 New here? Check out the [workshop website](https://workshop.superluminar.io).
+👉 New here? Check out the [workshop website](https://fullstackworkshop.superluminar.io).
 
 🤓 You want to contribute? Check [this](CONTRIBUTING.md).
 

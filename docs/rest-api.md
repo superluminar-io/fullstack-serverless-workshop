@@ -37,7 +37,7 @@ Create a fresh AWS CDK app with Projen.
   ```ts
   new MyStack(app, 'notes-api-dev', { env: devEnv });
   ```
-  Rename `my-stack-dev` to something unique (e.g. append your name).
+  Rename `notes-api-dev` to something unique (e.g. append your name).
 1. Deploy the CloudFormation stack:
    ```bash
    npm run deploy
@@ -65,7 +65,7 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
 - [CDK Construct to create a Node.js Lambda function](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs-readme.html#nodejs-function)
 - [Simple Lambda function with log output](https://docs.aws.amazon.com/lambda/latest/dg/nodejs-logging.html)
 - [Hint about local bundling (to avoid Docker)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs-readme.html#local-bundling)
-- [Adding CDK dependencies with Projen](https://github.com/projen/projen/blob/main/API.md#class-awscdktypescriptapp--)
+- [Adding CDK dependencies with Projen](https://github.com/projen/projen/blob/main/docs/api/API.md#class-awscdktypescriptapp--)
 
 ### 🗺  Step-by-Step Guide
 
@@ -106,14 +106,14 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
    ```
 1. Add the following code to the file:
    ```typescript
-   import { aws_lambda_nodejs as lambdaNodeJs } from 'aws-cdk-lib';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {
      constructor(scope: Construct, id: string) {
        super(scope, id);
    
-       new lambdaNodeJs.NodejsFunction(this, "put-note");
+       new NodejsFunction(this, "put-note");
      }
    }
    ```
@@ -165,17 +165,15 @@ HTTP/2 200
 
 1. Update the file `./src/rest-api.ts`:
    ```typescript
-   import {
-     aws_lambda_nodejs as lambdaNodeJs,
-     aws_apigateway as apigateway,
-   } from 'aws-cdk-lib';
+   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {   
      constructor(scope: Construct, id: string) {
        super(scope, id);
    
-       const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note');
+       const putNote = new NodejsFunction(this, 'put-note');
    
        const api = new apigateway.RestApi(this, 'api');
        const resource = api.root.addResource('notes');
@@ -231,11 +229,9 @@ The note should be persisted in the DynamoDB table.
 
 1. Update the construct (`src/rest-api.ts`):
    ```typescript
-   import {
-     aws_dynamodb as dynamodb,
-     aws_lambda_nodejs as lambdaNodeJs,
-     aws_apigateway as apigateway,
-   } from 'aws-cdk-lib';
+   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+   import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {
@@ -249,7 +245,7 @@ The note should be persisted in the DynamoDB table.
          stream: dynamodb.StreamViewType.NEW_IMAGE,
        });
    
-       const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note', {
+       const putNote = new NodejsFunction(this, 'put-note', {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },
@@ -325,11 +321,9 @@ HTTP/2 200
 
 1. Extend the construct (`./src/rest-api.ts`):
    ```typescript
-   import {
-     aws_dynamodb as dynamodb,
-     aws_lambda_nodejs as lambdaNodeJs,
-     aws_apigateway as apigateway,
-   } from 'aws-cdk-lib';
+   import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+   import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
    import { Construct } from 'constructs';
    
    export class RestApi extends Construct {
@@ -343,13 +337,13 @@ HTTP/2 200
          stream: dynamodb.StreamViewType.NEW_IMAGE,
        });
    
-       const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note', {
+       const putNote = new NodejsFunction(this, 'put-note', {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },
        });
    
-       const listNotes = new lambdaNodeJs.NodejsFunction(this, 'list-notes', {
+       const listNotes = new NodejsFunction(this, 'list-notes', {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },

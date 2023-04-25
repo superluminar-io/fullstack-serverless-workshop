@@ -13,9 +13,10 @@
     "start": "docsify serve ./docs",
     "test:all": "npm run test --workspaces",
     "projen:all": "npm run projen --workspaces",
+    "nuke": "rm -rf node_modules packages/*/*/node_modules",
     "synth:all": "npm run synth --workspaces",
     "lint:all": "npm run eslint --workspaces",
-    "upgrade:all": "npm-check-updates --deep -u && npm install && npm run install:frontend && npm run projen:all"
+    "upgrade:all": "npx npm-check-updates --deep -u && npm install && npm run install:frontend && npm run projen:all"
   },
   "repository": {
     "type": "git",
@@ -30,6 +31,6 @@
   "homepage": "https://github.com/superluminar-io/fullstack-serverless-workshop#readme",
   "devDependencies": {
     "docsify-cli": "^4.4.4",
-    "npm-check-updates": "^16.6.2"
+    "npm-check-updates": "^16.10.7"
   }
 }

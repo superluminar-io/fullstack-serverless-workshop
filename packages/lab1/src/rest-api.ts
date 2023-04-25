@@ -1,8 +1,6 @@
-import {
-  aws_dynamodb as dynamodb,
-  aws_lambda_nodejs as lambdaNodeJs,
-  aws_apigateway as apigateway,
-} from 'aws-cdk-lib';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 import { Construct } from 'constructs';
 
 export class RestApi extends Construct {
@@ -16,13 +14,13 @@ export class RestApi extends Construct {
       stream: dynamodb.StreamViewType.NEW_IMAGE,
     });
 
-    const putNote = new lambdaNodeJs.NodejsFunction(this, 'put-note', {
+    const putNote = new NodejsFunction(this, 'put-note', {
       environment: {
         TABLE_NAME: this.notesTable.tableName,
       },
     });
 
-    const listNotes = new lambdaNodeJs.NodejsFunction(this, 'list-notes', {
+    const listNotes = new NodejsFunction(this, 'list-notes', {
       environment: {
         TABLE_NAME: this.notesTable.tableName,
       },

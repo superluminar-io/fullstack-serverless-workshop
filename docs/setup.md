@@ -2,7 +2,7 @@
 
 ## In this lab …
 
-- Setup development environment in Cloud9
+... we will setup the development environment in Cloud9
 
 ## Setting up Cloud9
 
