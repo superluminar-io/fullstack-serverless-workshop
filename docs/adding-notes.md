@@ -197,8 +197,10 @@ HTTP/2 200
    ```
 1. Copy the endpoint URL from the output of the deployment in your terminal and run the following request to send a HTTP request:
    ```bash
-   curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/prod/notes
+   curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
+%TODO: Frontend-App: Let them do it or have it already in place?
+1. You want to see if this also works in your hosted app? Check the frontend URL you received in Lab 1. 
 
 ## AWS DynamoDB
 
@@ -315,7 +317,7 @@ The note should be persisted in the DynamoDB table.
    ```
 1. Send a HTTP request with your endpoint url:
    ```bash
-   curl -X POST https://XXXXXX.execute-api.eu-central-1.amazonaws.com/prod/notes --data '{ "title": "Hello World", "content": "abc" }' -H 'Content-Type: application/json' -i
+   curl -X POST https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes --data '{ "title": "Hello World", "content": "abc" }' -H 'Content-Type: application/json' -i
    ```
 1. Ideally, we have stored the first DynamoDB item! 🎉
 

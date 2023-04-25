@@ -123,9 +123,10 @@ HTTP/2 200
    ```
 1. Run the following request with your endpoint URL:
    ```bash
-   curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/prod/notes
+   curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
-
+%TODO: Frontend-App: Let them do it or have it already in place?
+1. You want to see if this also works in your hosted app? Check the frontend URL you received in Lab 1. 
 ---
 
 %TODO: Update following implementation + link:

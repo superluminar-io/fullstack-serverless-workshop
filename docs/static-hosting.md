@@ -71,7 +71,7 @@ Create a frontend app in a new subfolder we can deploy as a static website.
   git clone GITHUBXXXXX/frontend ~/notes-api/frontend
   ```
 %% TODO: Add .env file in Frontend  
-1. Use the `sample.env` file inside the frontend folder and turn it into a `.env`.
+1. Use the `.env.example` file inside the frontend folder and turn it into a `.env` file.
 1. Start the frontend server:
    ```bash
    cd frontend
@@ -216,6 +216,7 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
    npm run deploy
    ```
 1. Get the frontend URL from the CloudFormation output and visit the site.
+⚠️Important: You should keep this URL so you can check the progress in the upcoming labs.
 
 ---
 
