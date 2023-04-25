@@ -70,7 +70,7 @@ Create a frontend app in a new subfolder we can deploy as a static website.
   ```bash
   git clone GITHUBXXXXX/frontend ~/notes-api/frontend
   ```
-%% TODO: Add .env File in Frontend  
+%% TODO: Add .env file in Frontend  
 1. Use the `sample.env` file inside the frontend folder and turn it into a `.env`.
 1. Start the frontend server:
    ```bash
@@ -86,7 +86,7 @@ Create a frontend app in a new subfolder we can deploy as a static website.
 
 ### 📝 Task
 
-Now that we have created a frontend app, we want to extend the infrastructure to deploy the frontend app.
+Now that we have created a frontend app, we want to add the infrastructure to deploy it.
 
 Create a new CloudFormation stack for the static hosting. The stack should include a S3 bucket for the assets, a CloudFront distributon and deployment steps to bundle the frontend assets.
 
