@@ -1,5 +1,5 @@
 - [Welcome](/)
 - [Lab 0 - Setup](/setup)
-- [Lab 1 - REST API](/rest-api)
+- [Lab 1 - RESTful HTTP API](/http-api)
 - [Lab 2 - Static Hosting](/static-hosting)
 - [What’s next?](/next)
