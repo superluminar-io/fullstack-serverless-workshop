@@ -18,5 +18,4 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   ],
 });
 
-// Windows users might need this
 project.synth();

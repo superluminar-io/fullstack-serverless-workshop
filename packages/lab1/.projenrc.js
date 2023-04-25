@@ -15,6 +15,5 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     '@types/aws-lambda',
   ],
 });
-// Windows users need this
-project.jest.addTestMatch('**/?(*.)+(spec|test).ts?(x)');
+
 project.synth();

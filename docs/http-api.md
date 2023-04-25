@@ -214,6 +214,31 @@ HTTP/2 200
      };
    };
    ```
+
+1. Update the `.projenrc.js` configuration:
+   ```js
+   const { awscdk, javascript } = require('projen');
+   const project = new awscdk.AwsCdkTypeScriptApp({
+     cdkVersion: '2.1.0',
+     defaultReleaseBranch: 'main',
+     github: false,
+     name: 'notes-api',
+     packageManager: javascript.NodePackageManager.NPM,
+     deps: [
+       '@aws-sdk/client-dynamodb',
+       '@aws-sdk/lib-dynamodb',
+       '@aws-cdk/aws-apigatewayv2-alpha',
+       '@aws-cdk/aws-apigatewayv2-integrations-alpha',
+     ],
+     devDeps: [
+       '@types/aws-lambda',
+     ],
+   });
+
+   project.synth();
+   ```
+1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
+
 1. Deploy the latest changes:
    ```bash
    npm run deploy
