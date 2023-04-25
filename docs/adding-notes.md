@@ -2,7 +2,7 @@
 
 ## In this lab …
 
-- Setting up RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB to be able to add notes in your app.
+- Setting up a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
 
 ## AWS Lambda function
 
@@ -41,8 +41,11 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
      deps: [
        '@aws-sdk/client-dynamodb',
        '@aws-sdk/lib-dynamodb',
+       'aws-sdk',
+       'fs-extra',
      ],
      devDeps: [
+       '@types/fs-extra', 
        '@types/aws-lambda',
      ],
    });
@@ -50,7 +53,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    project.synth();
    ```
 1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
-1. Create a new file for our first construct:
+1. Create a new file for the new construct:
    ```bash
    touch ./src/http-api.ts 
    ```
@@ -87,7 +90,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    ```
 
 1. Deploy the latest changes: `npm run deploy`
-
+   %TODO: Double check - this quite likely will already come earlier in Lab 1 - we might skip this completely or have a new screenshot for Lab 1
    Be aware you will be asked to confirm IAM Statement and IAM Policy Changes:
 
    ![deployment confirmation](./media/http-api/deployment-confirmation.png)
@@ -181,8 +184,11 @@ HTTP/2 200
        '@aws-sdk/lib-dynamodb',
        '@aws-cdk/aws-apigatewayv2-alpha',
        '@aws-cdk/aws-apigatewayv2-integrations-alpha',
+       'aws-sdk',
+       'fs-extra',
      ],
      devDeps: [
+       '@types/fs-extra', 
        '@types/aws-lambda',
      ],
    });

@@ -70,7 +70,6 @@ Create a frontend app in a new subfolder we can deploy as a static website.
   ```bash
   git clone GITHUBXXXXX/frontend ~/notes-api/frontend
   ```
-%% TODO: Add .env file in Frontend  
 1. Use the `.env.example` file inside the frontend folder and turn it into a `.env` file.
 1. Start the frontend server:
    ```bash
@@ -80,6 +79,7 @@ Create a frontend app in a new subfolder we can deploy as a static website.
    Go to http://localhost:3000 and enjoy the app!
 
 %% TODO: TO DISCUSS either we cut this or we explain that ec2 need permission and add the secgroup 
+
 %% Question Verena: Why do we need to add this here?
 
 ## CloudFormation Stack
@@ -88,7 +88,7 @@ Create a frontend app in a new subfolder we can deploy as a static website.
 
 Now that we have created a frontend app, we want to add the infrastructure to deploy it.
 
-Create a new CloudFormation stack for the static hosting. The stack should include a S3 bucket for the assets, a CloudFront distributon and deployment steps to bundle the frontend assets.
+It is hence time to create our first CloudFormation stack for the static hosting. The stack should include a S3 bucket for the assets, a CloudFront distributon and deployment steps to bundle the frontend assets.
 
 ### 🔎 Hints
 
@@ -216,8 +216,9 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
    npm run deploy
    ```
 1. Get the frontend URL from the CloudFormation output and visit the site.
+
 ⚠️Important: You should keep this URL so you can check the progress in the upcoming labs.
 
 ---
-
+%TODO: Update following implementation + link:
 You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).
