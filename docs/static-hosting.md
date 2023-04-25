@@ -71,8 +71,8 @@ Create a new CloudFormation stack for the static hosting. The stack should inclu
      deps: [
        '@aws-sdk/client-dynamodb',
        '@aws-sdk/lib-dynamodb',
-       '@aws-cdk/aws-apigatewayv2-alpha": "^2.76.0-alpha.0',
-       '@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.76.0-alpha.0',
+       '@aws-cdk/aws-apigatewayv2-alpha',
+       '@aws-cdk/aws-apigatewayv2-integrations-alpha',
        'aws-sdk',
        'fs-extra',
      ],
