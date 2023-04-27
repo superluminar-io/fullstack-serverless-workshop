@@ -1,9 +1,11 @@
 # What’s next?
 
-In the labs, we created a REST API, persisted our data in a DynamoDB table and even deployed a frontend app. That's cool, but we are hungry for more... 
+In the labs, we created a RESTful HTTP API, persisted our data in a DynamoDB table and even deployed a frontend app. That's cool, but we are hungry for more...
 This section is just an inspiration of things you could do.
 
 First this workshop is based on [another workshop](https://workshop.superluminar.io/#/) where you get further insights on testing and do a mini game day.
+
+If you want to expand your backend skills further, you could try to implement the following features:
 
 - API Gateway
   - Implement a route to get a note by id
@@ -14,9 +16,6 @@ First this workshop is based on [another workshop](https://workshop.superluminar
 - DynamoDB
   - Implement [TTL](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/TTL.html) so the notes get deleted at some point (see also [AWS CDK documentation](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_dynamodb.Table.html#timetoliveattribute))
   - [EventBridge](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events_targets-readme.html#invoke-a-lambda-function): Create a [Cron Job](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_events-readme.html#scheduling), that invokes an AWS Lambda function to do something (e.g. store a note, manipulate data or whatever you come up with)
-- Frontend
-  - Fetch the list of notes
-  - Implement a form to create a new note
 - Monitoring, Logging & Tracing
   - Create a [CloudWatch Alarm for the REST API](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-apigatewayv2-alpha-readme.html#metrics)
   - Enable [X-Ray for the AWS lambda functions](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda-readme.html#lambda-with-x-ray-tracing) and get familiar with tracing
