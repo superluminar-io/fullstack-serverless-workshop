@@ -208,8 +208,7 @@ HTTP/2 200
    ```bash
    curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
-   %TODO: Frontend-App: Let them do it or have it already in place?
-1. You want to see if this also works in your hosted app? Check the frontend URL you received in Lab 1.
+1. You want to see if this also works in your hosted app? Then you need to put the API gateway endpoint in your frontend `.env` file. Then you can check the frontend URL you received in Lab 1.
 
 ## AWS DynamoDB
 
