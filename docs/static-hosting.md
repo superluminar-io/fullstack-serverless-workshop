@@ -220,6 +220,10 @@ It is hence time to create our first resources using CDK for the static hosting.
  npm run deploy
 ````
 
+You will be asked if you want to make security-related changes. Confirm with `y`.
+
+![iam permissions](./media/http-api/iam-changes.png)
+
 1. Your stack should have output an url in the console: follow it to visit the site.
 
 ⚠️Important: You should keep this URL so you can check the progress in the upcoming labs.
