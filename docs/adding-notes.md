@@ -1,64 +1,14 @@
-# RESTful HTTP API
+# Adding Notes
 
 ## In this lab …
 
-- Setting up AWS CDK
-- Setting up RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB
-
-## Bootstrapping
-
-### 📝 Task
-
-Create a fresh AWS CDK app with Projen.
-
-### 🔎 Hints
-
-- [Getting started with Projen](https://github.com/projen/projen#getting-started)
-
-### 🗺  Step-by-Step Guide
-
-1. Create a new folder `notes-api`:
-   ```bash
-   mkdir notes-api
-   ```
-1. Step into the folder:
-   ```bash
-   cd notes-api
-   ```
-1. Init AWS CDK with Projen:
-   ```bash
-   npx projen@latest new awscdk-app-ts --package-manager 'NPM' --github false --no-git
-   ```
-1. Install Node.js dependencies:
-   ```bash
-   npm i
-   ```
-2. Go to the file `./src/main.ts`. Scroll down and find this line:
-  ```ts
-  new MyStack(app, 'notes-api-dev', { env: devEnv });
-  ```
-  Rename `notes-api-dev` to something unique (e.g. append your name).
-1. Deploy the CloudFormation stack:
-   ```bash
-   npm run deploy
-   ```
-   ⚠️You might run into the following error:
-
-   ![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
-
-   If this is the case, you need to bootstrap your environment first by running:
-
-   ```bash
-   cdk bootstrap
-   ```
-
-   Afterwards you can go ahead and deploy your CloudFormation stack.
+- Setting up a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
 
 ## AWS Lambda function
 
 ### 📝 Task
 
-Now that we have an AWS CDK app, we want to deploy the first resource. Create a simple AWS Lambda function, that logs the message `Hello world :)`.
+Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simple AWS Lambda function, that logs the message `Hello world :)`.
 
 ### 🔎 Hints
 
@@ -91,8 +41,11 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
      deps: [
        '@aws-sdk/client-dynamodb',
        '@aws-sdk/lib-dynamodb',
+       'aws-sdk',
+       'fs-extra',
      ],
      devDeps: [
+       '@types/fs-extra', 
        '@types/aws-lambda',
      ],
    });
@@ -100,7 +53,7 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
    project.synth();
    ```
 1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
-1. Create a new file for our first construct:
+1. Create a new file for the new construct:
    ```bash
    touch ./src/http-api.ts 
    ```
@@ -129,13 +82,15 @@ Now that we have an AWS CDK app, we want to deploy the first resource. Create a 
      constructor(scope: Construct, id: string, props: StackProps = {}) {
        super(scope, id, props);
    
+       new StaticHosting(this, 'static-hosting');
+
        new HttpApi(this, 'http-api');
      }
    }
    ```
 
 1. Deploy the latest changes: `npm run deploy`
-
+   %TODO: Double check - this quite likely will already come earlier in Lab 1 - we might skip this completely or have a new screenshot for Lab 1
    Be aware you will be asked to confirm IAM Statement and IAM Policy Changes:
 
    ![deployment confirmation](./media/http-api/deployment-confirmation.png)
@@ -229,8 +184,11 @@ HTTP/2 200
        '@aws-sdk/lib-dynamodb',
        '@aws-cdk/aws-apigatewayv2-alpha',
        '@aws-cdk/aws-apigatewayv2-integrations-alpha',
+       'aws-sdk',
+       'fs-extra',
      ],
      devDeps: [
+       '@types/fs-extra', 
        '@types/aws-lambda',
      ],
    });
@@ -245,8 +203,10 @@ HTTP/2 200
    ```
 1. Copy the endpoint URL from the output of the deployment in your terminal and run the following request to send a HTTP request:
    ```bash
-   curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/prod/notes
+   curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
+%TODO: Frontend-App: Let them do it or have it already in place?
+1. You want to see if this also works in your hosted app? Check the frontend URL you received in Lab 1. 
 
 ## AWS DynamoDB
 
@@ -363,132 +323,9 @@ The note should be persisted in the DynamoDB table.
    ```
 1. Send a HTTP request with your endpoint url:
    ```bash
-   curl -X POST https://XXXXXX.execute-api.eu-central-1.amazonaws.com/prod/notes --data '{ "title": "Hello World", "content": "abc" }' -H 'Content-Type: application/json' -i
+   curl -X POST https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes --data '{ "title": "Hello World", "content": "abc" }' -H 'Content-Type: application/json' -i
    ```
 1. Ideally, we have stored the first DynamoDB item! 🎉
 
-## Fetch list of notes
-
-### 📝 Task
-
-The first endpoint works! Let's extend the API and provide another route to fetch all notes. The API should be able to handle this request:
-
-```bash
-$ > curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes -i
-HTTP/2 200
-
-[{"content":"abc","id":"2021-04-27T11:54:47.987Z","title":"Hello World"}]
-```
-
-### 🔎 Hints
-
-- [DocumentClient Scan operation](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/classes/_aws_sdk_lib_dynamodb.dynamodbdocument-1.html#scan)
-
-### 🗺  Step-by-Step Guide
-
-1. Extend the construct (`./src/http-api.ts`):
-   ```typescript
-   import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
-   import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
-   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-   import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-   import { Construct } from 'constructs';
-   
-   export class HttpApi extends Construct {
-     public notesTable: dynamodb.Table;
-   
-     constructor(scope: Construct, id: string) {
-       super(scope, id);
-   
-       this.notesTable = new dynamodb.Table(this, 'notes-table', {
-         partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
-         stream: dynamodb.StreamViewType.NEW_IMAGE,
-       });
-   
-       const putNote = new NodejsFunction(this, 'put-note', {
-         environment: {
-           TABLE_NAME: this.notesTable.tableName,
-         },
-       });
-   
-       const listNotes = new NodejsFunction(this, 'list-notes', {
-         environment: {
-           TABLE_NAME: this.notesTable.tableName,
-         },
-       });
-   
-       this.notesTable.grant(putNote, 'dynamodb:PutItem');
-       this.notesTable.grant(listNotes, 'dynamodb:Scan');
-   
-       const api = new apigwv2.HttpApi(this, 'api', {
-          corsPreflight: {
-            allowHeaders: [
-              'Content-Type',
-            ],
-            allowMethods: [
-              apigwv2.CorsHttpMethod.GET,
-              apigwv2.CorsHttpMethod.OPTIONS,
-              apigwv2.CorsHttpMethod.POST,
-            ],
-            allowOrigins: ['*'],
-          },
-        });
-
-        const putNotesIntegration = new HttpLambdaIntegration(
-          'putNotesIntegration',
-           putNote,
-        );
-
-        const listNotesIntegration = new HttpLambdaIntegration(
-          'listNotesIntegration',
-           listNotes,
-        );
-
-        api.addRoutes({
-          path: '/notes',
-          methods: [apigwv2.HttpMethod.POST],
-          integration: putNotesIntegration,
-        });
-
-        api.addRoutes({
-          path: '/notes',
-          methods: [apigwv2.HttpMethod.GET],
-          integration: listNotesIntegration,
-        });
-     }
-   }
-   ```
-1. Create a new file for the second AWS Lambda function:
-   ```bash
-   touch src/http-api.list-notes.ts
-   ```
-1. Add the following code to the file:
-   ```typescript
-   import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-   import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
-   
-   export const handler = async () => {
-     const DB = DynamoDBDocument.from(new DynamoDBClient({}));
-   
-     const response = await DB.scan({
-       TableName: process.env.TABLE_NAME!,
-     });
-   
-     return {
-       statusCode: 200,
-       body: JSON.stringify(response.Items),
-     };
-   };
-   ```
-1. Deploy the latest changes:
-   ```bash
-   npm run deploy
-   ```
-1. Run the following request with your endpoint URL:
-   ```bash
-   curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/prod/notes
-   ```
-
----
-
-You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab1).
+%TODO: Update following implementation + link:
+You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).
