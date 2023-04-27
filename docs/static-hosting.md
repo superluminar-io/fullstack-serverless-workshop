@@ -79,7 +79,9 @@ Create a frontend app in a new subfolder we can deploy as a static website.
 git clone GITHUBXXXXX/frontend ~/notes-api/frontend
 ```
 
+1. Navigate to the frontend folder: `cd frontend`
 1. Rename the `.env.example` file inside the frontend folder and turn it into a `.env` file.
+1. Run `npm i` inside the frontend folder to install the dependencies.
 
 We aren't going to start the frontend server right now, but we'll get to see our app soon enough.
 
