@@ -33,6 +33,10 @@ Create a fresh AWS CDK app with Projen.
    ```bash
    npm i
    ```
+1. Rename the `.projenrc.ts` file to `.projenrc.js:`
+   ```bash
+   mv .projenrc.ts .projenrc.js
+   ```
 1. Go to the file `./src/main.ts`. Scroll down and find this line:
 
 ```ts
@@ -119,7 +123,13 @@ It is hence time to create our first resources using CDK for the static hosting.
    project.synth();
    ```
 
-1. Run `npm run projen` in the root project to install the new dependencies and re-generate the auto-generated files.
+1. If you are in the frontend folder, cd back to the root project to install the new dependencies and re-generate the auto-generated files:
+
+   ```bash
+   cd ..
+   npm run projen
+   ```
+
 1. Create a new file for our first construct:
    ```bash
    touch ./src/static-hosting.ts
