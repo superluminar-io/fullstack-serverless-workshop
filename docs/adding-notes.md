@@ -92,10 +92,6 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    ```
 
 1. Deploy the latest changes: `npm run deploy`
-   %TODO: Double check - this quite likely will already come earlier in Lab 1 - we might skip this completely or have a new screenshot for Lab 1
-   Be aware you will be asked to confirm IAM Statement and IAM Policy Changes:
-
-   ![deployment confirmation](./media/http-api/deployment-confirmation.png)
 
 ## Amazon API Gateway
 
