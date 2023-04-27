@@ -3,7 +3,7 @@
 ## In this lab …
 
 - Learn how to set up AWS CDK
-- Learn how to deploy your app (or single page applications) with AWS
+- Hosting your Frontend: Learn how to deploy your app (or single page applications) with AWS
 
 ## Bootstrapping
 
