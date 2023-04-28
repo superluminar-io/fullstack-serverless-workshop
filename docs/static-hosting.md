@@ -219,19 +219,19 @@ It is hence time to create our first resources using CDK for the static hosting.
    }
    ```
 
-⚠️Important: Only update the imports and the class. Everything below the class should be the same.
+   ⚠️Important: Only update the imports and the class. Everything below the class should be the same.
 
-6. Deploy the latest changes:
+1. Deploy the latest changes:
 
-```bash
- npm run deploy
-```
+   ```bash
+   npm run deploy
+   ```
 
-You will be asked if you want to make security-related changes. Confirm with `y`.
+   You will be asked if you want to make security-related changes. Confirm with `y`.
 
-![iam permissions](./media/http-api/iam-changes.png)
+   ![iam permissions](./media/http-api/iam-changes.png)
 
-Your stack should have output an url in the console: follow it to visit the site.
+1. Your stack should have output an url in the console: follow it to visit the site.
 
 ⚠️Important: You should keep this URL so you can check the progress in the upcoming labs.
 

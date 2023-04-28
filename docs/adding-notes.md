@@ -2,7 +2,7 @@
 
 ## In this lab …
 
-- Set up our backend: We will set up a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
+... Set up our backend: this consists of a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
 
 ## AWS Lambda function
 
