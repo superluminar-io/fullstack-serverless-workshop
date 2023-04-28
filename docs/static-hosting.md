@@ -33,23 +33,13 @@ Create a fresh AWS CDK app with Projen.
    ```bash
    npm i
    ```
-1. Rename the `.projenrc.ts` file to `.projenrc.js:`
-   ```bash
-   mv .projenrc.ts .projenrc.js
-   ```
 1. Go to the file `./src/main.ts`. Scroll down and find this line:
-
-```ts
-new MyStack(app, "notes-api-dev", { env: devEnv });
-```
-
-Rename `notes-api-dev` to something unique (e.g. append your name).
-
+   ```ts
+   new mystack(app, "notes-api-dev", { env: devenv });
+   ```
+   Rename `notes-api-dev` to something unique (e.g. append your name).
 1. Deploy your CDK Stack:
-
    ````bash
-
-   ```bash
    npm run deploy
    ````
 
@@ -109,13 +99,14 @@ It is hence time to create our first resources using CDK for the static hosting.
 1. In the root project, extend the list of CDK dependencies in the `.projenrc.js` configuration. The final file should look like this:
 
    ```js
-   const { awscdk, javascript } = require("projen");
+   import { awscdk, javascript } from 'projen';
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: "2.1.0",
-     defaultReleaseBranch: "main",
+     cdkVersion: '2.1.0',
+     defaultReleaseBranch: 'main',
      github: false,
-     name: "notes-api",
+     name: 'notes-api',
      packageManager: javascript.NodePackageManager.NPM,
+     projenrcTs: true,
      deps: ["aws-sdk", "fs-extra"],
      devDeps: ["@types/fs-extra"],
    });
@@ -223,13 +214,12 @@ It is hence time to create our first resources using CDK for the static hosting.
    }
    ```
 
-````
 ⚠️Important: Only update the imports and the class. Everything below the class should be the same.
 1. Deploy the latest changes:
- ```bash
- npm run deploy
-````
-
+  ```bash
+  npm run deploy
+  ```
+  
 You will be asked if you want to make security-related changes. Confirm with `y`.
 
 ![iam permissions](./media/http-api/iam-changes.png)
@@ -240,5 +230,4 @@ You will be asked if you want to make security-related changes. Confirm with `y`
 
 ---
 
-%TODO: Update following implementation + link:
-You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).
+You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab1).
