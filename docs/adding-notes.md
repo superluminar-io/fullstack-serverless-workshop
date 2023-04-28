@@ -29,7 +29,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
      console.log("Hello World :)");
    };
    ```
-1. Update the `.projenrc.js` configuration:
+1. Update the `.projenrc.ts` configuration:
 
    ```js
    const { awscdk, javascript } = require("projen");
@@ -174,7 +174,7 @@ HTTP/2 200
    };
    ```
 
-1. Update the `.projenrc.js` configuration:
+1. Update the `.projenrc.ts` configuration:
 
    ```js
    const { awscdk, javascript } = require("projen");

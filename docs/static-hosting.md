@@ -33,17 +33,13 @@ Create a fresh AWS CDK app with Projen.
    ```bash
    npm i
    ```
-1. Rename the `.projenrc.ts` file to `.projenrc.js:`
-   ```bash
-   mv .projenrc.ts .projenrc.js
-   ```
 1. Go to the file `./src/main.ts`. Scroll down and find this line:
 
-```ts
-new MyStack(app, "notes-api-dev", { env: devEnv });
-```
+   ```ts
+   new MyStack(app, "notes-api-dev", { env: devEnv });
+   ```
 
-Rename `notes-api-dev` to something unique (e.g. append your name).
+1. Rename `notes-api-dev` to something unique (e.g. append your name).
 
 1. Deploy your CDK Stack:
 
@@ -51,17 +47,17 @@ Rename `notes-api-dev` to something unique (e.g. append your name).
    npm run deploy
    ```
 
-  ⚠️You might run into the following error:
+⚠️You might run into the following error:
 
-   ![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
+![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
 
-   If this is the case, you need to bootstrap your environment first by running:
+If this is the case, you need to bootstrap your environment first by running:
 
-   ```bash
-   cdk bootstrap
-   ```
+```bash
+cdk bootstrap
+```
 
-   Afterwards you can go ahead and deploy the CDK stack again. This time it should work.
+Afterwards you can go ahead and deploy the CDK stack again. This time it should work.
 
 ## Frontend Application
 
@@ -104,7 +100,7 @@ It is hence time to create our first resources using CDK for the static hosting.
 
 ### 🗺 Step-by-Step Guide
 
-1. In the root project, extend the list of CDK dependencies in the `.projenrc.js` configuration. The final file should look like this:
+1. In the root project, extend the list of CDK dependencies in the `.projenrc.ts` configuration. The final file should look like this:
 
    ```js
    const { awscdk, javascript } = require("projen");
