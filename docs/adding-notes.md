@@ -178,13 +178,14 @@ HTTP/2 200
 1. Update the `.projenrc.ts` configuration:
 
    ```js
-   const { awscdk, javascript } = require("projen");
+   import { awscdk, javascript } from 'projen';
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: "2.1.0",
-     defaultReleaseBranch: "main",
+     cdkVersion: '2.1.0',
+     defaultReleaseBranch: 'main',
      github: false,
-     name: "notes-api",
+     name: 'notes-api',
      packageManager: javascript.NodePackageManager.NPM,
+     projenrcTs: true,
      deps: [
        "@aws-sdk/client-dynamodb",
        "@aws-sdk/lib-dynamodb",
@@ -337,5 +338,4 @@ The note should be persisted in the DynamoDB table.
    ```
 1. Ideally, we have stored the first DynamoDB item! 🎉
 
-%TODO: Update following implementation + link:
 You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).

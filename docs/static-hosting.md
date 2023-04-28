@@ -104,14 +104,16 @@ It is hence time to create our first resources using CDK for the static hosting.
 
 1. In the root project, extend the list of CDK dependencies in the `.projenrc.ts` configuration. The final file should look like this:
 
-   ```typescript
-   const { awscdk, javascript } = require("projen");
+
+   ```js
+   import { awscdk, javascript } from 'projen';
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: "2.1.0",
-     defaultReleaseBranch: "main",
+     cdkVersion: '2.1.0',
+     defaultReleaseBranch: 'main',
      github: false,
-     name: "notes-api",
+     name: 'notes-api',
      packageManager: javascript.NodePackageManager.NPM,
+     projenrcTs: true,
      deps: ["aws-sdk", "fs-extra"],
      devDeps: ["@types/fs-extra"],
    });
@@ -219,6 +221,7 @@ It is hence time to create our first resources using CDK for the static hosting.
    }
    ```
 
+
    ⚠️Important: Only update the imports and the class. Everything below the class should be the same.
 
 1. Deploy the latest changes:
@@ -237,5 +240,4 @@ It is hence time to create our first resources using CDK for the static hosting.
 
 ---
 
-%TODO: Update following implementation + link:
-You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).
+You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab1).
