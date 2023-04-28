@@ -2,14 +2,14 @@
 
 ## Bug report 🐞
 
-Feel free to open an [issue](https://github.com/superluminar-io/serverless-workshop/issues).
+Feel free to open an [issue](https://github.com/superluminar-io/fullstack-serverless-workshop/issues).
 
 ## Local development setup 🧑‍💻
 
 ```sh
-$ > git clone git@github.com:superluminar-io/serverless-workshop.git
+$ > git clone git@github.com:superluminar-io/fullstack-serverless-workshop.git
 
-$ > cd serverless-workshop
+$ > cd fullstack-serverless-workshop
 
 # Install dependencies
 $ > npm install

@@ -2,7 +2,7 @@
 
 ## In this lab …
 
-- Setting up a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
+- Set up our backend: We will set up a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
 
 ## AWS Lambda function
 
@@ -17,11 +17,11 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
 - [Hint about local bundling (to avoid Docker)](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib.aws_lambda_nodejs-readme.html#local-bundling)
 - [Adding CDK dependencies with Projen](https://github.com/projen/projen/blob/main/docs/api/API.md#class-awscdktypescriptapp--)
 
-### 🗺  Step-by-Step Guide
+### 🗺 Step-by-Step Guide
 
 1. Create a new file for the AWS Lambda function:
    ```bash
-   touch ./src/http-api.put-note.ts 
+   touch ./src/http-api.put-note.ts
    ```
 1. Add the following code to the file:
    ```typescript
@@ -30,70 +30,68 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    };
    ```
 1. Update the `.projenrc.js` configuration:
+
    ```js
-   const { awscdk, javascript } = require('projen');
+   const { awscdk, javascript } = require("projen");
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: '2.1.0',
-     defaultReleaseBranch: 'main',
+     cdkVersion: "2.1.0",
+     defaultReleaseBranch: "main",
      github: false,
-     name: 'notes-api',
+     name: "notes-api",
      packageManager: javascript.NodePackageManager.NPM,
      deps: [
-       '@aws-sdk/client-dynamodb',
-       '@aws-sdk/lib-dynamodb',
-       'aws-sdk',
-       'fs-extra',
+       "@aws-sdk/client-dynamodb",
+       "@aws-sdk/lib-dynamodb",
+       "aws-sdk",
+       "fs-extra",
      ],
-     devDeps: [
-       '@types/fs-extra', 
-       '@types/aws-lambda',
-     ],
+     devDeps: ["@types/fs-extra", "@types/aws-lambda"],
    });
 
    project.synth();
    ```
+
 1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
 1. Create a new file for the new construct:
    ```bash
-   touch ./src/http-api.ts 
+   touch ./src/http-api.ts
    ```
 1. Add the following code to the file:
+
    ```typescript
-   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-   import { Construct } from 'constructs';
-   
+   import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+   import { Construct } from "constructs";
+
    export class HttpApi extends Construct {
      constructor(scope: Construct, id: string) {
        super(scope, id);
-   
+
        new NodejsFunction(this, "put-note");
      }
    }
    ```
+
 1. Update the file `./src/main.ts`:
-   
-   ⚠️Important: Only update the imports and the class. Everything below the class should be the same.  
+
+   ⚠️Important: Only update the imports and the class. Everything below the class should be the same.
+
    ```typescript
-   import { App, Stack, StackProps } from 'aws-cdk-lib';
-   import { Construct } from 'constructs';
-   import { HttpApi } from './http-api';
-   
+   import { App, Stack, StackProps } from "aws-cdk-lib";
+   import { Construct } from "constructs";
+   import { HttpApi } from "./http-api";
+
    export class MyStack extends Stack {
      constructor(scope: Construct, id: string, props: StackProps = {}) {
        super(scope, id, props);
-   
-       new StaticHosting(this, 'static-hosting');
 
-       new HttpApi(this, 'http-api');
+       new StaticHosting(this, "static-hosting");
+
+       new HttpApi(this, "http-api");
      }
    }
    ```
 
 1. Deploy the latest changes: `npm run deploy`
-   %TODO: Double check - this quite likely will already come earlier in Lab 1 - we might skip this completely or have a new screenshot for Lab 1
-   Be aware you will be asked to confirm IAM Statement and IAM Policy Changes:
-
-   ![deployment confirmation](./media/http-api/deployment-confirmation.png)
 
 ## Amazon API Gateway
 
@@ -114,87 +112,92 @@ HTTP/2 200
 
 - [CDK Construct to create an API Gateway with Lambda integration](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-apigatewayv2-alpha-readme.html#defining-http-apis)
 - [Lambda function response format for API Gateway integrations](https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-develop-integrations-lambda.html#http-api-develop-integrations-lambda.response)
-- [CloudFormation stack output for the API endpoint](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#stack-outputs)
+- [Stack output for the API endpoint](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#stack-outputs)
 
-### 🗺  Step-by-Step Guide
+### 🗺 Step-by-Step Guide
 
 1. Update the file `./src/http-api.ts`:
+
    ```typescript
-   import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
-   import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
-   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-   import { Construct } from 'constructs';
-   
-   export class HttpApi extends Construct {   
+   import * as apigwv2 from "@aws-cdk/aws-apigatewayv2-alpha";
+   import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+   import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+   import { CfnOutput } from "aws-cdk-lib";
+   import { Construct } from "constructs";
+
+   export class HttpApi extends Construct {
      constructor(scope: Construct, id: string) {
        super(scope, id);
-   
-       const putNote = new NodejsFunction(this, 'put-note');
-   
-       const api = new apigwv2.HttpApi(this, 'api', {
-          corsPreflight: {
-            allowHeaders: [
-              'Content-Type',
-            ],
-            allowMethods: [
-              apigwv2.CorsHttpMethod.GET,
-              apigwv2.CorsHttpMethod.OPTIONS,
-              apigwv2.CorsHttpMethod.POST,
-            ],
-            allowOrigins: ['*'],
-          },
-        });
 
-        const putNotesIntegration = new HttpLambdaIntegration(
-          'putNotesIntegration',
-           putNote,
-        );
+       const putNote = new NodejsFunction(this, "put-note");
 
-        api.addRoutes({
-          path: '/notes',
-          methods: [apigwv2.HttpMethod.POST],
-          integration: putNotesIntegration,
-        });
+       const api = new apigwv2.HttpApi(this, "api", {
+         corsPreflight: {
+           allowHeaders: ["Content-Type"],
+           allowMethods: [
+             apigwv2.CorsHttpMethod.GET,
+             apigwv2.CorsHttpMethod.OPTIONS,
+             apigwv2.CorsHttpMethod.POST,
+           ],
+           allowOrigins: ["*"],
+         },
+       });
+
+       const putNotesIntegration = new HttpLambdaIntegration(
+         "putNotesIntegration",
+         putNote
+       );
+
+       api.addRoutes({
+         path: "/notes",
+         methods: [apigwv2.HttpMethod.POST],
+         integration: putNotesIntegration,
+       });
+
+       new CfnOutput(this, "apiEndpoint", {
+         value: api.url!,
+       });
      }
    }
    ```
+
 1. Update the AWS Lambda function (`./src/http-api.put-note.ts`):
+
    ```typescript
    export const handler = async () => {
-     console.log('Hello World :)');
+     console.log("Hello World :)");
 
      return {
        statusCode: 200,
-       body: JSON.stringify({ hello: 'world' }),
+       body: JSON.stringify({ hello: "world" }),
      };
    };
    ```
 
 1. Update the `.projenrc.js` configuration:
+
    ```js
-   const { awscdk, javascript } = require('projen');
+   const { awscdk, javascript } = require("projen");
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: '2.1.0',
-     defaultReleaseBranch: 'main',
+     cdkVersion: "2.1.0",
+     defaultReleaseBranch: "main",
      github: false,
-     name: 'notes-api',
+     name: "notes-api",
      packageManager: javascript.NodePackageManager.NPM,
      deps: [
-       '@aws-sdk/client-dynamodb',
-       '@aws-sdk/lib-dynamodb',
-       '@aws-cdk/aws-apigatewayv2-alpha',
-       '@aws-cdk/aws-apigatewayv2-integrations-alpha',
-       'aws-sdk',
-       'fs-extra',
+       "@aws-sdk/client-dynamodb",
+       "@aws-sdk/lib-dynamodb",
+       "@aws-cdk/aws-apigatewayv2-alpha",
+       "@aws-cdk/aws-apigatewayv2-integrations-alpha",
+       "aws-sdk",
+       "fs-extra",
      ],
-     devDeps: [
-       '@types/fs-extra', 
-       '@types/aws-lambda',
-     ],
+     devDeps: ["@types/fs-extra", "@types/aws-lambda"],
    });
 
    project.synth();
    ```
+
 1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
 
 1. Deploy the latest changes:
@@ -205,8 +208,7 @@ HTTP/2 200
    ```bash
    curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
-%TODO: Frontend-App: Let them do it or have it already in place?
-1. You want to see if this also works in your hosted app? Check the frontend URL you received in Lab 1. 
+1. You want to see if this also works in your hosted app? Then you need to put the API gateway endpoint in your frontend `.env` file. Then you can check the frontend URL you received in Lab 1.
 
 ## AWS DynamoDB
 
@@ -231,78 +233,84 @@ The note should be persisted in the DynamoDB table.
 - [NPM package for AWS Lambda function event types (APIGatewayProxyEvent is your friend)](https://www.npmjs.com/package/@types/aws-lambda)
 - [Documentation for the DynamoDBDocument (DynamoDBDocumentClient with convenience methods](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/classes/_aws_sdk_lib_dynamodb.dynamodbdocument-1.html#put)
 
-### 🗺  Step-by-Step Guide
+### 🗺 Step-by-Step Guide
 
 1. Update the construct (`src/http-api.ts`):
+
    ```typescript
-   import * as apigwv2 from '@aws-cdk/aws-apigatewayv2-alpha';
-   import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
-   import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-   import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
-   import { Construct } from 'constructs';
-   
+   import * as apigwv2 from "@aws-cdk/aws-apigatewayv2-alpha";
+   import { HttpLambdaIntegration } from "@aws-cdk/aws-apigatewayv2-integrations-alpha";
+   import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+   import { CfnOutput } from "aws-cdk-lib";
+   import * as dynamodb from "aws-cdk-lib/aws-dynamodb";
+   import { Construct } from "constructs";
+
    export class HttpApi extends Construct {
      public notesTable: dynamodb.Table;
-   
+
      constructor(scope: Construct, id: string) {
        super(scope, id);
-   
-       this.notesTable = new dynamodb.Table(this, 'notes-table', {
-         partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+
+       this.notesTable = new dynamodb.Table(this, "notes-table", {
+         partitionKey: { name: "id", type: dynamodb.AttributeType.STRING },
          stream: dynamodb.StreamViewType.NEW_IMAGE,
        });
-   
-       const putNote = new NodejsFunction(this, 'put-note', {
+
+       const putNote = new NodejsFunction(this, "put-note", {
          environment: {
            TABLE_NAME: this.notesTable.tableName,
          },
        });
-      
-       this.notesTable.grant(putNote, 'dynamodb:PutItem');
-   
-       const api = new apigwv2.HttpApi(this, 'api', {
-          corsPreflight: {
-            allowHeaders: [
-              'Content-Type',
-            ],
-            allowMethods: [
-              apigwv2.CorsHttpMethod.GET,
-              apigwv2.CorsHttpMethod.OPTIONS,
-              apigwv2.CorsHttpMethod.POST,
-            ],
-            allowOrigins: ['*'],
-          },
-        });
 
-        const putNotesIntegration = new HttpLambdaIntegration(
-          'putNotesIntegration',
-           putNote,
-        );
+       this.notesTable.grant(putNote, "dynamodb:PutItem");
 
-        api.addRoutes({
-          path: '/notes',
-          methods: [apigwv2.HttpMethod.POST],
-          integration: putNotesIntegration,
-        });
+       const api = new apigwv2.HttpApi(this, "api", {
+         corsPreflight: {
+           allowHeaders: ["Content-Type"],
+           allowMethods: [
+             apigwv2.CorsHttpMethod.GET,
+             apigwv2.CorsHttpMethod.OPTIONS,
+             apigwv2.CorsHttpMethod.POST,
+           ],
+           allowOrigins: ["*"],
+         },
+       });
+
+       const putNotesIntegration = new HttpLambdaIntegration(
+         "putNotesIntegration",
+         putNote
+       );
+
+       api.addRoutes({
+         path: "/notes",
+         methods: [apigwv2.HttpMethod.POST],
+         integration: putNotesIntegration,
+       });
+
+       new CfnOutput(this, "apiEndpoint", {
+         value: api.url!,
+       });
      }
    }
    ```
+
 1. Update the AWS Lambda function (`src/http-api.put-note.ts`):
+
    ```typescript
-   import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-   import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
-   
+   import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+   import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
+
    export const handler = async (event: AWSLambda.APIGatewayProxyEvent) => {
      const DB = DynamoDBDocument.from(new DynamoDBClient({}));
-   
-     const body = JSON.parse(event.body || '{}');
-   
+
+     const body = JSON.parse(event.body || "{}");
+
      if (!body.title || !body.content) {
        return {
          statusCode: 400,
        };
      }
-   
+
      await DB.put({
        Item: {
          id: new Date().toISOString(),
@@ -311,12 +319,13 @@ The note should be persisted in the DynamoDB table.
        },
        TableName: process.env.TABLE_NAME!,
      });
-   
+
      return {
        statusCode: 201,
      };
    };
    ```
+
 1. Deploy the latest changes:
    ```bash
    npm run deploy

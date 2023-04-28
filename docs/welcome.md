@@ -2,7 +2,7 @@
 
 ## Welcome
 
-This workshop is designed to help you expand your skillset beyond frontend know-how to fullstack serverless development with AWS. Together we will create the next greatest note-taking app. We will create a REST API with Amazon API Gateway, Lambda and DynamoDB. After creating the API, we will connect our frontend hosted on S3 to our serverless backend. Allong the way we try to identify best practices and antipatterns.
+This workshop is designed to help you expand your skillset beyond frontend know-how to fullstack serverless development with AWS. Together we will create the next greatest note-taking app. First we will create the resources necessary to host our frontend on S3. Then we will create a serverless backend with API Gateway, Lambda and DynamoDB and connect our frontend to our backend to create a fully functional app. Along the way we try to identify best practices and antipatterns.
 
 Let's get started! 🤩
 
@@ -20,10 +20,10 @@ The API enables us to create the next awesome notes app. With two routes in plac
 ## Scope
 
 - Infrastructure as Code with AWS CDK
-- Simple Rest API with Amazon API Gateway
+- Static Hosting with S3 and CloudFront
+- Simple RESTful HTTP API with Amazon API Gateway
 - Serverless computation with Lambda
 - NoSql Database with DynamoDB
-- Static Hosting with S3 and CloudFront
 
 ## Out of Scope
 
