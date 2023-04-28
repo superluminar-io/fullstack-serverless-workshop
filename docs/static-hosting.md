@@ -34,26 +34,18 @@ Create a fresh AWS CDK app with Projen.
    npm i
    ```
 1. Go to the file `./src/main.ts`. Scroll down and find this line:
+
    ```ts
-   new mystack(app, "notes-api-dev", { env: devenv });
+   new MyStack(app, "notes-api-dev", { env: devEnv });
    ```
-   Rename `notes-api-dev` to something unique (e.g. append your name).
+
+1. Rename `notes-api-dev` to something unique (e.g. append your name).
+
 1. Deploy your CDK Stack:
-   ````bash
-   npm run deploy
-   ````
-
-   ⚠️You might run into the following error:
-
-   ![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
-
-   If this is the case, you need to bootstrap your environment first by running:
 
    ```bash
-   cdk bootstrap
+   npm run deploy
    ```
-
-   Afterwards you can go ahead and deploy the CDK stack again. This time it should work.
 
 ## Frontend Application
 
@@ -69,13 +61,27 @@ Create a frontend app in a new subfolder we can deploy as a static website.
 
 1. Clone the example app into the root project:
 
-```bash
-git clone GITHUBXXXXX/frontend ~/notes-api/frontend
-```
+   ```bash
+   git clone GITHUBXXXXX/frontend ~/environment/notes-api/frontend
+   ```
 
-1. Navigate to the frontend folder: `cd frontend`
-1. Rename the `.env.example` file inside the frontend folder and turn it into a `.env` file.
-1. Run `npm i` inside the frontend folder to install the dependencies.
+1. Navigate to the `frontend` folder:
+
+   ```bash
+   cd frontend
+   ```
+
+1. Rename the `.env.example` file inside the frontend folder and turn it into a `.env` file:
+
+   ```bash
+   mv .env.example .env
+   ```
+
+1. Install the frontend dependencies.
+
+   ```bash
+     npm i
+   ```
 
 We aren't going to start the frontend server right now, but we'll get to see our app soon enough.
 
@@ -96,7 +102,8 @@ It is hence time to create our first resources using CDK for the static hosting.
 
 ### 🗺 Step-by-Step Guide
 
-1. In the root project, extend the list of CDK dependencies in the `.projenrc.js` configuration. The final file should look like this:
+1. In the root project, extend the list of CDK dependencies in the `.projenrc.ts` configuration. The final file should look like this:
+
 
    ```js
    import { awscdk, javascript } from 'projen';
@@ -214,15 +221,18 @@ It is hence time to create our first resources using CDK for the static hosting.
    }
    ```
 
-⚠️Important: Only update the imports and the class. Everything below the class should be the same.
-1. Deploy the latest changes:
-  ```bash
-  npm run deploy
-  ```
-  
-You will be asked if you want to make security-related changes. Confirm with `y`.
 
-![iam permissions](./media/http-api/iam-changes.png)
+   ⚠️Important: Only update the imports and the class. Everything below the class should be the same.
+
+1. Deploy the latest changes:
+
+   ```bash
+   npm run deploy
+   ```
+
+   You will be asked if you want to make security-related changes. Confirm with `y`.
+
+   ![iam permissions](./media/http-api/iam-changes.png)
 
 1. Your stack should have output an url in the console: follow it to visit the site.
 

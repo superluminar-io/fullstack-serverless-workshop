@@ -2,7 +2,7 @@
 
 ## In this lab …
 
-- Extend the API to be able to fetch and see your notes in your frontend app.
+... Extend the API to be able to fetch and see your notes in your frontend app.
 
 ## Fetch list of notes
 

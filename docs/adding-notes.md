@@ -2,7 +2,7 @@
 
 ## In this lab …
 
-- Set up our backend: We will set up a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
+... Set up our backend: this consists of a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
 
 ## AWS Lambda function
 
@@ -29,7 +29,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
      console.log("Hello World :)");
    };
    ```
-1. Update the `.projenrc.js` configuration:
+1. Update the `.projenrc.ts` configuration:
 
    ```js
    const { awscdk, javascript } = require("projen");
@@ -78,6 +78,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    ```typescript
    import { App, Stack, StackProps } from "aws-cdk-lib";
    import { Construct } from "constructs";
+   import { StaticHosting } from "./static-hosting";
    import { HttpApi } from "./http-api";
 
    export class MyStack extends Stack {
@@ -174,7 +175,7 @@ HTTP/2 200
    };
    ```
 
-1. Update the `.projenrc.js` configuration:
+1. Update the `.projenrc.ts` configuration:
 
    ```js
    import { awscdk, javascript } from 'projen';

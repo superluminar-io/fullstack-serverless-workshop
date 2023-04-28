@@ -15,8 +15,6 @@ Set up a Cloud9 environment:
 5. Scroll down and click on **Create**
 6. That's it. Your environment will be created.
 7. Open your Cloud9 IDE and **enable hidden** files in the file explorer. See [documentation](https://docs.aws.amazon.com/cloud9/latest/user-guide/tour-ide.html#tour-ide-environment).
-8. Change the auto-save behaviour in Cloud9 IDE settings:
-9. Enable autosaving:
-   - Click on the Cloud9 logo
-   - Navigate to **Preferences**
-   - scroll to the section **Experimental** and turn Auto-Save Files on (On Focus Change).
+8. Enable autosaving:
+   - Click on the gear icon in the top right corner
+   - Scroll to the section **Experimental** and turn Auto-Save Files on (On Focus Change).
