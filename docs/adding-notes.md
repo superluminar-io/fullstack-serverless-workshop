@@ -78,6 +78,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    ```typescript
    import { App, Stack, StackProps } from "aws-cdk-lib";
    import { Construct } from "constructs";
+   import { StaticHosting } from "./static-hosting";
    import { HttpApi } from "./http-api";
 
    export class MyStack extends Stack {
