@@ -47,18 +47,6 @@ Create a fresh AWS CDK app with Projen.
    npm run deploy
    ```
 
-⚠️You might run into the following error:
-
-![cdk bootstrap error](./media/http-api/cdk-bootstrap-error.png)
-
-If this is the case, you need to bootstrap your environment first by running:
-
-```bash
-cdk bootstrap
-```
-
-Afterwards you can go ahead and deploy the CDK stack again. This time it should work.
-
 ## Frontend Application
 
 ### 📝 Task
@@ -116,7 +104,7 @@ It is hence time to create our first resources using CDK for the static hosting.
 
 1. In the root project, extend the list of CDK dependencies in the `.projenrc.ts` configuration. The final file should look like this:
 
-   ```js
+   ```typescript
    const { awscdk, javascript } = require("projen");
    const project = new awscdk.AwsCdkTypeScriptApp({
      cdkVersion: "2.1.0",
