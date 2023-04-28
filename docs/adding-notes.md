@@ -31,7 +31,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    ```
 1. Update the `.projenrc.ts` configuration:
 
-   ```js
+   ```typescript
    const { awscdk, javascript } = require("projen");
    const project = new awscdk.AwsCdkTypeScriptApp({
      cdkVersion: "2.1.0",
@@ -73,7 +73,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
 
 1. Update the file `./src/main.ts`:
 
-   ⚠️Important: Only update the imports and the class. Everything below the class should be the same.
+   ⚠️ Important: Only update the imports and the class. Everything below the class should be the same.
 
    ```typescript
    import { App, Stack, StackProps } from "aws-cdk-lib";
