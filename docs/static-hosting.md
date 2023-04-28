@@ -104,14 +104,13 @@ It is hence time to create our first resources using CDK for the static hosting.
 
 1. In the root project, extend the list of CDK dependencies in the `.projenrc.ts` configuration. The final file should look like this:
 
-
-   ```js
-   import { awscdk, javascript } from 'projen';
+   ```typescript
+   import { awscdk, javascript } from "projen";
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: '2.1.0',
-     defaultReleaseBranch: 'main',
+     cdkVersion: "2.1.0",
+     defaultReleaseBranch: "main",
      github: false,
-     name: 'notes-api',
+     name: "notes-api",
      packageManager: javascript.NodePackageManager.NPM,
      projenrcTs: true,
      deps: ["aws-sdk", "fs-extra"],

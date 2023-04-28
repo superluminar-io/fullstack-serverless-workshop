@@ -177,13 +177,13 @@ HTTP/2 200
 
 1. Update the `.projenrc.ts` configuration:
 
-   ```js
-   import { awscdk, javascript } from 'projen';
+   ```typescript
+   import { awscdk, javascript } from "projen";
    const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: '2.1.0',
-     defaultReleaseBranch: 'main',
+     cdkVersion: "2.1.0",
+     defaultReleaseBranch: "main",
      github: false,
-     name: 'notes-api',
+     name: "notes-api",
      packageManager: javascript.NodePackageManager.NPM,
      projenrcTs: true,
      deps: [
