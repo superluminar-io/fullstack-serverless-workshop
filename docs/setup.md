@@ -10,7 +10,7 @@ Set up a Cloud9 environment:
 
 1. Log in to your AWS Console then click the following link to go to the [Cloud9](https://console.aws.amazon.com/cloud9/) service.
 2. Click on the button **Create environment**
-3. Choose a name (e.g. **Serverless Workshop**)
+3. Choose a name (e.g. **Fullstack Workshop**)
 4. Select **m5.large** for **Instance type**. Keep the other settings.
 5. Scroll down and click on **Create**
 6. That's it. Your environment will be created.
