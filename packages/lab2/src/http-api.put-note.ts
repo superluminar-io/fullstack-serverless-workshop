@@ -1,10 +1,10 @@
-import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { DynamoDBDocument } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBDocument } from "@aws-sdk/lib-dynamodb";
 
 export const handler = async (event: AWSLambda.APIGatewayProxyEvent) => {
   const DB = DynamoDBDocument.from(new DynamoDBClient({}));
 
-  const body = JSON.parse(event.body || '{}');
+  const body = JSON.parse(event.body || "{}");
 
   if (!body.title || !body.content) {
     return {

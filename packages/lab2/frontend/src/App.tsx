@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import { listNotes } from "./services/notes";
+import { Note } from "./types";
 
-function App() {
+import { Navbar } from "./Components/Navbar";
+import { AddNotesForm } from "./Components/AddNotesForm";
+import { Divider } from "./Components/Divider";
+import { NotesList } from "./Components/NotesList";
+import { Footer } from "./Components/Footer";
+
+
+const App: React.FunctionComponent = () => {
+  const [notes, setNotes] = useState<Note[]>([]);
+
+  const fetchData = async () => {
+    const currentNotes = await listNotes();
+    setNotes(currentNotes);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [notes]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar />
+      <AddNotesForm />
+      <Divider />
+      <NotesList notes={notes} />
+      <Footer />
+    </>
   );
-}
+};
 
 export default App;
