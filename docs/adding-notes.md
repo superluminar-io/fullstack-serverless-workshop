@@ -32,18 +32,19 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
 1. Update the `.projenrc.ts` configuration:
 
    ```typescript
-   const { awscdk, javascript } = require("projen");
+   import { awscdk, javascript } from "projen";
    const project = new awscdk.AwsCdkTypeScriptApp({
      cdkVersion: "2.1.0",
      defaultReleaseBranch: "main",
      github: false,
      name: "notes-api",
      packageManager: javascript.NodePackageManager.NPM,
+     projenrcTs: true,
      deps: [
        "@aws-sdk/client-dynamodb",
        "@aws-sdk/lib-dynamodb",
        "aws-sdk",
-       "fs-extra",
+       "fs-extra@^11.1.1",
      ],
      devDeps: ["@types/fs-extra", "@types/aws-lambda"],
    });
@@ -192,7 +193,7 @@ HTTP/2 200
        "@aws-cdk/aws-apigatewayv2-alpha",
        "@aws-cdk/aws-apigatewayv2-integrations-alpha",
        "aws-sdk",
-       "fs-extra",
+       "fs-extra@^11.1.1",
      ],
      devDeps: ["@types/fs-extra", "@types/aws-lambda"],
    });

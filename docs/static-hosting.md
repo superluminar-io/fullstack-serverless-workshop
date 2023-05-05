@@ -113,7 +113,7 @@ It is hence time to create our first resources using CDK for the static hosting.
      name: "notes-api",
      packageManager: javascript.NodePackageManager.NPM,
      projenrcTs: true,
-     deps: ["aws-sdk", "fs-extra"],
+     deps: ["aws-sdk", "fs-extra@^11.1.1"],
      devDeps: ["@types/fs-extra"],
    });
 
