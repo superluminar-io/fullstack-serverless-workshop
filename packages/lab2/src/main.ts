@@ -1,15 +1,12 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import { HttpApi } from './http-api';
-import { StaticHosting } from './static-hosting';
+import { App, Stack, StackProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import { StaticHosting } from "./static-hosting";
 
 export class MyStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    new HttpApi(this, 'rest-api');
-
-    new StaticHosting(this, 'static-hosting');
+    new StaticHosting(this, "static-hosting");
   }
 }
 
@@ -21,7 +18,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'my-stack-dev', { env: devEnv });
-// new MyStack(app, 'my-stack-prod', { env: prodEnv });
+new MyStack(app, "notes-api-dev-fullstack", { env: devEnv });
+// new MyStack(app, 'test-prod', { env: prodEnv });
 
 app.synth();
