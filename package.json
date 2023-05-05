@@ -9,7 +9,7 @@
     "doc": "docs"
   },
   "scripts": {
-    "install:frontend": "cd packages/lab2/frontend && npm install",
+    "install:frontend": "cd packages/lab1/frontend && npm install",
     "start": "docsify serve ./docs",
     "test:all": "npm run test --workspaces",
     "projen:all": "npm run projen --workspaces",
