@@ -32,7 +32,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
 1. Update the `.projenrc.ts` configuration:
 
    ```typescript
-   const { awscdk, javascript } = require("projen");
+   import { awscdk, javascript } from "projen";
    const project = new awscdk.AwsCdkTypeScriptApp({
      cdkVersion: "2.1.0",
      defaultReleaseBranch: "main",
