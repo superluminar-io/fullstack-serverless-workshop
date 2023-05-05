@@ -62,7 +62,7 @@ Create a frontend app in a new subfolder we can deploy as a static website.
 1. Clone the example app into the root project:
 
    ```bash
-   git clone GITHUBXXXXX/frontend ~/environment/notes-api/frontend
+   git clone https://github.com/superluminar-io/frontend.git ~/environment/notes-api/frontend
    ```
 
 1. Navigate to the `frontend` folder:
