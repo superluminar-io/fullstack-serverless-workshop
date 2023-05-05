@@ -3,7 +3,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   cdkVersion: '2.1.0',
   defaultReleaseBranch: 'main',
   github: false,
-  name: 'notes-api',
+  name: 'notes-api-lab1',
   packageManager: javascript.NodePackageManager.NPM,
   projenrcTs: true,
   deps: ["aws-sdk", "fs-extra@^11.1.1"],

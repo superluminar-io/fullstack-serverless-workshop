@@ -1,5 +1,5 @@
 {
-  "name": "notes-api",
+  "name": "notes-api-lab1",
   "scripts": {
     "build": "npx projen build",
     "bundle": "npx projen bundle",
