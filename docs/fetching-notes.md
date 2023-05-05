@@ -146,4 +146,4 @@ Now we are lucky engineers with a Restful API and a globally hosted frontend. Le
 
 ---
 
-You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab1).
+You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab3).
