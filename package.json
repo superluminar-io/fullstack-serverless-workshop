@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Hands-on AWS fullstack serverless workshop for beginners",
   "workspaces": [
-    "packages/labs/*"
+    "packages/*"
   ],
   "directories": {
     "doc": "docs"
