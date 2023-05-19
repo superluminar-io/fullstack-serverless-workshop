@@ -4,6 +4,8 @@
 
 ... Set up our backend: this consists of a basic RESTful HTTP API with Amazon API Gateway, Lambda, and DynamoDB, so you are able to add notes.
 
+![architecture diagram](./media/architecture-lab2.png)
+
 ## AWS Lambda function
 
 ### 📝 Task
@@ -52,7 +54,11 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    project.synth();
    ```
 
-1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
+1. Run 
+   ```bash
+   npm run projen
+   ```
+   to install the new dependencies and re-generate the auto-generated files.
 1. Create a new file for the new construct:
    ```bash
    touch ./src/http-api.ts

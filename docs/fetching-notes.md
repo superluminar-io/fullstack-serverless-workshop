@@ -4,6 +4,8 @@
 
 ... Extend the API to be able to fetch and see your notes in your frontend app.
 
+![architecture diagram](./media/architecture.png)
+
 ## Fetch list of notes
 
 ### 📝 Task

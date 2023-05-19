@@ -5,6 +5,8 @@
 - Learn how to set up AWS CDK
 - Hosting your Frontend: Learn how to deploy your app (or single page applications) with AWS
 
+![architecture diagram](./media/architecture-lab1.png)
+
 ## Bootstrapping
 
 ### 📝 Task
