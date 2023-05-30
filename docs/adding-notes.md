@@ -316,6 +316,14 @@ The note should be persisted in the DynamoDB table.
    }
    ```
 
+   ⚠️ Important: Do not forget to update the name of your http-API in line
+
+   ```typescript
+   const api = new apigwv2.HttpApi(this, "api", {
+   ```
+
+   with the name you gave it in before.
+
 1. Update the AWS Lambda function (`src/http-api.put-note.ts`):
 
    ```typescript
