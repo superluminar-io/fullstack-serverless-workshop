@@ -203,13 +203,6 @@ HTTP/2 200
    }
    ```
 
-1. Find the following line in `./src/http-api.ts`
-
-   ```typescript
-   const api = new apigwv2.HttpApi(this, "api", {
-   ```
-   and rename `api` to something unique (e.g. append your name).
-
 1. Update the AWS Lambda function (`./src/http-api.put-note.ts`):
 
    ```typescript
@@ -315,14 +308,6 @@ The note should be persisted in the DynamoDB table.
      }
    }
    ```
-
-   ⚠️ Important: Do not forget to update the name of your http-API in line
-
-   ```typescript
-   const api = new apigwv2.HttpApi(this, "api", {
-   ```
-
-   with the name you gave it in before.
 
 1. Update the AWS Lambda function (`src/http-api.put-note.ts`):
 
