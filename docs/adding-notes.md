@@ -351,4 +351,6 @@ The note should be persisted in the DynamoDB table.
    ```
 1. Ideally, we have stored the first DynamoDB item! 🎉
 
+---
+
 You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).
