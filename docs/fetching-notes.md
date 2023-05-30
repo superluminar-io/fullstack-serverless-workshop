@@ -102,6 +102,14 @@ HTTP/2 200
    }
    ```
 
+   ⚠️ Important: Do not forget to update the name of your http-API in line
+
+   ```typescript
+   const api = new apigwv2.HttpApi(this, "api", {
+   ```
+
+   with the name you gave it in Lab 2.
+
 1. Create a new file for the second AWS Lambda function:
    ```bash
    touch src/http-api.list-notes.ts
@@ -134,7 +142,7 @@ HTTP/2 200
    ```bash
    curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
-   
+
 ### 🗺  Lets put it alll together
 
 Now we are lucky engineers with a Restful API and a globally hosted frontend. Let's put it all together...
