@@ -135,7 +135,7 @@ HTTP/2 200
    curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
 
-## 🗺 Let's put it all together
+## Let's put it all together
 
 Now we are lucky engineers with a Restful API and a globally hosted frontend. Let's put it all together...
 
