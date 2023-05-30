@@ -54,7 +54,7 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    project.synth();
    ```
 
-1. Run 
+1. Run
    ```bash
    npm run projen
    ```
@@ -99,7 +99,10 @@ Now that we have our app hosted via AWS Cloudfront and Amazon S3, create a simpl
    }
    ```
 
-1. Deploy the latest changes: `npm run deploy`
+1. Deploy the latest changes:
+   ```bash
+   npm run deploy
+   ```
 
 ## Amazon API Gateway
 
@@ -123,6 +126,37 @@ HTTP/2 200
 - [Stack output for the API endpoint](https://docs.aws.amazon.com/cdk/api/v2/docs/aws-cdk-lib-readme.html#stack-outputs)
 
 ### 🗺 Step-by-Step Guide
+
+1. Update the `.projenrc.ts` configuration:
+
+   ```typescript
+   import { awscdk, javascript } from "projen";
+   const project = new awscdk.AwsCdkTypeScriptApp({
+     cdkVersion: "2.1.0",
+     defaultReleaseBranch: "main",
+     github: false,
+     name: "notes-api",
+     packageManager: javascript.NodePackageManager.NPM,
+     projenrcTs: true,
+     deps: [
+       "@aws-sdk/client-dynamodb",
+       "@aws-sdk/lib-dynamodb",
+       "@aws-cdk/aws-apigatewayv2-alpha",
+       "@aws-cdk/aws-apigatewayv2-integrations-alpha",
+       "aws-sdk",
+       "fs-extra@^11.1.1",
+     ],
+     devDeps: ["@types/fs-extra", "@types/aws-lambda"],
+   });
+
+   project.synth();
+   ```
+
+1. Run
+   ```bash
+   npm run projen
+   ```
+   to install the new dependencies and re-generate the auto-generated files.
 
 1. Update the file `./src/http-api.ts`:
 
@@ -182,33 +216,6 @@ HTTP/2 200
    };
    ```
 
-1. Update the `.projenrc.ts` configuration:
-
-   ```typescript
-   import { awscdk, javascript } from "projen";
-   const project = new awscdk.AwsCdkTypeScriptApp({
-     cdkVersion: "2.1.0",
-     defaultReleaseBranch: "main",
-     github: false,
-     name: "notes-api",
-     packageManager: javascript.NodePackageManager.NPM,
-     projenrcTs: true,
-     deps: [
-       "@aws-sdk/client-dynamodb",
-       "@aws-sdk/lib-dynamodb",
-       "@aws-cdk/aws-apigatewayv2-alpha",
-       "@aws-cdk/aws-apigatewayv2-integrations-alpha",
-       "aws-sdk",
-       "fs-extra@^11.1.1",
-     ],
-     devDeps: ["@types/fs-extra", "@types/aws-lambda"],
-   });
-
-   project.synth();
-   ```
-
-1. Run `npm run projen` to install the new dependencies and re-generate the auto-generated files.
-
 1. Deploy the latest changes:
    ```bash
    npm run deploy
@@ -217,7 +224,6 @@ HTTP/2 200
    ```bash
    curl -X POST https://XXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
-1. You want to see if this also works in your hosted app? Then you need to put the API gateway endpoint in your frontend `.env` file. Then you can check the frontend URL you received in Lab 1.
 
 ## AWS DynamoDB
 
@@ -344,5 +350,7 @@ The note should be persisted in the DynamoDB table.
    curl -X POST https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes --data '{ "title": "Hello World", "content": "abc" }' -H 'Content-Type: application/json' -i
    ```
 1. Ideally, we have stored the first DynamoDB item! 🎉
+
+---
 
 You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).

@@ -67,6 +67,10 @@ Create a frontend app in a new subfolder we can deploy as a static website.
    git clone https://github.com/superluminar-io/frontend.git ~/environment/notes-api/frontend
    ```
 
+   Your folder strucrure should now look like this:
+
+   ![folder structure](./media/folder-structure.png)
+
 1. Navigate to the `frontend` folder:
 
    ```bash
