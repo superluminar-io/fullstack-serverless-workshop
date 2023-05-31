@@ -135,16 +135,12 @@ HTTP/2 200
    curl https://XXXXXX.execute-api.eu-central-1.amazonaws.com/notes
    ```
 
-## Let's put it all together
+## Let's put it all together - again
 
-Now we are lucky engineers with a Restful API and a globally hosted frontend. Let's put it all together...
+So now we should not only be able to add notes, but also get our notes displayed in the frontend.
 
-1. We need to put the API gateway endpoint in our frontend `.env` file.
-1. After that we have to put the changed configuration file to our CDN:
-   ```bash
-   npm run deploy
-   ```
-1. Then finally we can check the frontend URL you received in [Lab 1 - Static Hosting](/static-hosting). And start using this important application 🙂
+1. Check if the API gateway endpoint in our `.env` file is still correct. Deploy again via `npm run deploy` in case you had to change it.
+1. Check the frontend URL you received in [Lab 1 - Static Hosting](/static-hosting) - and start using this important application 🙂
 
 ---
 

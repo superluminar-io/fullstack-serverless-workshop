@@ -351,6 +351,17 @@ The note should be persisted in the DynamoDB table.
    ```
 1. Ideally, we have stored the first DynamoDB item! 🎉
 
+## Let's put it all together
+
+Now we are lucky engineers with a Restful API and a globally hosted frontend. Let's put it all together...
+
+1. We need to put the API gateway endpoint in our frontend `.env` file.
+1. After that we have to put the changed configuration file to our CDN:
+   ```bash
+   npm run deploy
+   ```
+1. Then finally we can check the frontend URL you received in [Lab 1 - Static Hosting](/static-hosting), open the web console and check if adding notes works there, too.
+
 ---
 
 You can find the complete implementation of this lab [here](https://github.com/superluminar-io/fullstack-serverless-workshop/tree/main/packages/lab2).
